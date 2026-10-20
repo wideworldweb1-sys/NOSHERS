@@ -82,7 +82,7 @@ const [isSpeaker, setIsSpeaker] = useState(false);
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               roomName: activeRoom.title,
-              participantName: 'You'
+              participantName: localStorage.getItem('noshers-display-name') || `Guest-${Math.random().toString(36).slice(2, 6)}`
             })
           }
         );
