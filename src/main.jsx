@@ -477,7 +477,22 @@ async function toggleRaiseHand() {
     ].map((p, i) => (
       <div className="speaker" key={p.identity}>
         <div className={`speaker-avatar speaker-${i % 4}`}>
-          {p.name?.[0] || '?'}
+          
+{p.identity === liveKitRoom.localParticipant.identity && profilePhoto ? (
+  <img
+    src={profilePhoto}
+    alt={p.name || 'Profile'}
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover',
+      borderRadius: '50%'
+    }}
+  />
+) : (
+  p.name?.[0] || '?'
+)}
+
           {i === 0 && (
             <span className="host-crown">
               <Crown size={12} />
