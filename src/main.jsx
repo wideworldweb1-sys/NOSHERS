@@ -44,6 +44,11 @@ function App() {
   const [showProfile, setShowProfile] = useState(false);
   const [displayName, setDisplayName] = useState(localStorage.getItem('noshers-display-name') || '');
 const [profilePhoto, setProfilePhoto] = useState(localStorage.getItem('noshers-profile-photo') || '');
+  const [user, setUser] = useState(null);
+const [authEmail, setAuthEmail] = useState('');
+const [authPassword, setAuthPassword] = useState('');
+const [authMode, setAuthMode] = useState('login');
+const [authLoading, setAuthLoading] = useState(false);
   const [roomTitle, setRoomTitle] = useState('');
   const [roomTopic, setRoomTopic] = useState('');
   const [toast, setToast] = useState('');
@@ -237,10 +242,56 @@ room.on(RoomEvent.ParticipantDisconnected, () => {
     };
   }, [activeRoom?.title]);
 
+useEffect(() => {
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    setUser(session?.user ?? null);
+  });
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setUser(session?.user ?? null);
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
   const notify = (message) => {
     setToast(message);
     window.setTimeout(() => setToast(''), 2600);
   };
+  
+  const handleAuth = async () => {
+    setAuthLoading(true);
+
+    try {
+      const email = authEmail.trim();
+
+      const { data, error } = authMode === 'signup'
+        ? await supabase.auth.signUp({
+            email,
+            password: authPassword,
+          })
+        : await supabase.auth.signInWithPassword({
+            email,
+            password: authPassword,
+          });
+
+      if (error) throw error;
+
+      if (authMode === 'signup' && !data.session) {
+        notify('Account created! Check your email to confirm.');
+      } else {
+        setUser(data.user);
+        notify('Welcome to NOSHERS!');
+      }
+    } catch (error) {
+      notify(error.message || 'Login failed. Please try again.');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
 useEffect(() => {
   let cancelled = false;
 
@@ -418,6 +469,60 @@ async function toggleRaiseHand() {
     { label: 'Following', icon: Heart },
     { label: 'VIP Lounge', icon: Crown },
   ];
+
+  if (!user) {
+    return (
+      <div style={{ minHeight: '100vh', background: '#100d1c', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAuth();
+          }}
+          style={{ width: '100%', maxWidth: 380, background: '#1d182c', padding: 28, borderRadius: 20, boxSizing: 'border-box' }}
+        >
+          <h1 style={{ textAlign: 'center', letterSpacing: 3 }}>NOSHERS</h1>
+          <p style={{ textAlign: 'center', color: '#b9aecf' }}>Your voice. Your community.</p>
+
+          <h2>{authMode === 'login' ? 'Welcome back' : 'Create your account'}</h2>
+
+          <label>Email address</label>
+          <input
+            type="email"
+            value={authEmail}
+            onChange={(e) => setAuthEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+            autoComplete="email"
+            style={{ display: 'block', width: '100%', boxSizing: 'border-box', padding: 13, margin: '8px 0 18px', borderRadius: 9, border: '1px solid #514565', background: '#100d1c', color: 'white' }}
+          />
+
+          <label>Password</label>
+          <input
+            type="password"
+            value={authPassword}
+            onChange={(e) => setAuthPassword(e.target.value)}
+            placeholder="At least 6 characters"
+            minLength={6}
+            required
+            autoComplete={authMode === 'login' ? 'current-password' : 'new-password'}
+            style={{ display: 'block', width: '100%', boxSizing: 'border-box', padding: 13, margin: '8px 0 20px', borderRadius: 9, border: '1px solid #514565', background: '#100d1c', color: 'white' }}
+          />
+
+          <button type="submit" disabled={authLoading} style={{ width: '100%', padding: 14, border: 0, borderRadius: 9, background: '#a78bfa', color: '#160e26', fontWeight: 'bold', cursor: 'pointer' }}>
+            {authLoading ? 'Please wait...' : authMode === 'login' ? 'Log in' : 'Create account'}
+          </button>
+
+          <p style={{ textAlign: 'center', color: '#c7bdd8' }}>
+            {authMode === 'login' ? "Don't have an account?" : 'Already have an account?'}
+          </p>
+
+          <button type="button" onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')} style={{ width: '100%', padding: 12, border: '1px solid #514565', borderRadius: 9, background: 'transparent', color: 'white', cursor: 'pointer' }}>
+            {authMode === 'login' ? 'Sign up' : 'Log in instead'}
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell">
