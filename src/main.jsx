@@ -286,7 +286,7 @@ useEffect(() => {
         notify('Welcome to NOSHERS!');
       }
     } catch (error) {
-      notify(error.message || 'Login failed. Please try again.');
+      alert(error.message || 'Login failed. Please try again.');
     } finally {
       setAuthLoading(false);
     }
