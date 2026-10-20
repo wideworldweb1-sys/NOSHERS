@@ -8,7 +8,10 @@ import {
   ShieldCheck, ChevronRight, Coins, LogIn
 } from 'lucide-react';
 import './styles.css';
-
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+);
 const initialRooms = [
   { id: 1, title: 'Late Night Thoughts 🌙', topic: 'Deep talks • no judgment', host: 'Mira', listeners: 128, speakers: ['Mira', 'Zayn', 'Luna'], tag: 'TRENDING', color: 'rose', avatar: 'M', live: true },
   { id: 2, title: 'The Midnight Lounge', topic: 'Music, stories & good energy', host: 'Ray', listeners: 86, speakers: ['Ray', 'Ayla', 'Noor'], tag: 'CHILL', color: 'blue', avatar: 'R', live: true },
