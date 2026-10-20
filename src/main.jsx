@@ -620,9 +620,36 @@ async function toggleRaiseHand() {
                 return;
               }
 
-              const reader = new FileReader();
-              reader.onload = () => setProfilePhoto(reader.result);
-              reader.readAsDataURL(file);
+             
+const reader = new FileReader();
+
+reader.onload = () => {
+  const image = new Image();
+
+  image.onload = () => {
+    const canvas = document.createElement('canvas');
+    const maxSize = 400;
+    const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+
+    canvas.width = Math.round(image.width * scale);
+    canvas.height = Math.round(image.height * scale);
+
+    const context = canvas.getContext('2d');
+    if (!context) {
+      notify('Could not process this photo.');
+      return;
+    }
+
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    setProfilePhoto(canvas.toDataURL('image/jpeg', 0.65));
+  };
+
+  image.onerror = () => notify('Could not read this photo.');
+  image.src = reader.result;
+};
+
+reader.readAsDataURL(file);
+
             }}
           />
         </label>
