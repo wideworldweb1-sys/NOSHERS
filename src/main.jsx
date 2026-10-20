@@ -76,7 +76,7 @@ const [isSpeaker, setIsSpeaker] = useState(false);
         setConnectionStatus('Connecting...');
 
         const response = await fetch(
-          `${import.meta.env.VITE_TOKEN_SERVER_URL || 'http://192.168.100.25:3001'}/api/livekit/token`,
+          `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/livekit/token`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -241,7 +241,7 @@ useEffect(() => {
   async function loadRooms() {
     try {
       const response = await fetch(
-        'http://192.168.100.25:3001/api/rooms'
+        `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/rooms`
       );
 
       if (!response.ok) return;
@@ -288,7 +288,7 @@ async function createRoom(e) {
 
   try {
     const response = await fetch(
-      'http://192.168.100.25:3001/api/rooms',
+      `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/rooms`,
       {
         method: 'POST',
         headers: {
