@@ -3,7 +3,7 @@ import { Room, RoomEvent } from 'livekit-client';
 import { createRoot } from 'react-dom/client';
 import {
   AudioLines, Search, Bell, Plus, Mic, MicOff, Headphones, Crown, Gift,
-  Users, Compass, House, UserRound, Settings, Sparkles, Heart, X, Radio,
+  Users, Compass, House, UserRound, Camera, Settings, Sparkles, Heart, X, Radio,
   ShieldCheck, ChevronRight, Coins, LogIn
 } from 'lucide-react';
 import './styles.css';
@@ -38,6 +38,8 @@ function App() {
   const [showCreate, setShowCreate] = useState(false);
   const [showGifts, setShowGifts] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [displayName, setDisplayName] = useState(localStorage.getItem('noshers-display-name') || '');
+const [profilePhoto, setProfilePhoto] = useState(localStorage.getItem('noshers-profile-photo') || '');
   const [roomTitle, setRoomTitle] = useState('');
   const [roomTopic, setRoomTopic] = useState('');
   const [toast, setToast] = useState('');
@@ -568,7 +570,105 @@ async function toggleRaiseHand() {
 
       {showGifts && <div className="modal-backdrop" onClick={() => setShowGifts(false)}><div className="modal gifts-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowGifts(false)}><X size={18}/></button><span className="modal-icon gift-modal-icon"><Gift size={23}/></span><span className="eyebrow">SPREAD THE GOOD ENERGY</span><h2>Send a little love</h2><p>Choose a gift to send into the room.</p><div className="gift-grid">{gifts.map(g=><button key={g.name} className="gift-tile" onClick={() => sendGift(g)}><span>{g.emoji}</span><b>{g.name}</b><small><Coins size={13}/>{g.coins}</small></button>)}</div><div className="coin-balance"><Coins size={17}/> Balance <b>{coins.toLocaleString()} coins</b></div><small className="modal-footnote">Demo wallet only. Purchases and real-money transactions are not enabled.</small></div></div>}
 
-      {showProfile && <div className="modal-backdrop" onClick={() => setShowProfile(false)}><div className="modal profile-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowProfile(false)}><X size={18}/></button><span className="avatar avatar-profile avatar-you">Y</span><h2>Your NOSHERS profile</h2><p>You're previewing the community as a guest.</p><div className="profile-info"><div><span>Membership</span><b>Free member</b></div><div><span>Coin balance</span><b>{coins.toLocaleString()} coins</b></div><div><span>Voice status</span><b>Not connected</b></div></div><button className="primary-btn full" onClick={() => {setShowProfile(false);notify('Authentication setup is the next backend step.')}}><LogIn size={17}/> Sign in (coming next)</button></div></div>}
+{showProfile && (
+  <div className="modal-backdrop" onClick={() => setShowProfile(false)}>
+    <div className="modal profile-modal" onClick={e => e.stopPropagation()}>
+      <button className="modal-close" onClick={() => setShowProfile(false)}>
+        <X size={18}/>
+      </button>
+
+      {profilePhoto ? (
+        <img
+          src={profilePhoto}
+          alt="Profile"
+          className="avatar avatar-profile"
+          style={{ objectFit: 'cover' }}
+        />
+      ) : (
+        <span className="avatar avatar-profile avatar-you">
+          {(displayName.trim()[0] || 'Y').toUpperCase()}
+        </span>
+      )}
+
+      <h2>Your NOSHERS profile</h2>
+      <p>Choose your name and profile photo.</p>
+
+      <div className="profile-info">
+        <label>
+          Display name
+          <input
+            type="text"
+            value={displayName}
+            onChange={e => setDisplayName(e.target.value)}
+            placeholder="Enter your name"
+            maxLength={30}
+          />
+        </label>
+
+        <label>
+          Profile photo
+          <input
+            type="file"
+            accept="image/*"
+            onChange={e => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+
+              if (file.size > 1024 * 1024) {
+                notify('Choose a photo smaller than 1 MB.');
+                e.target.value = '';
+                return;
+              }
+
+              const reader = new FileReader();
+              reader.onload = () => setProfilePhoto(reader.result);
+              reader.readAsDataURL(file);
+            }}
+          />
+        </label>
+
+        <div>
+          <span>Membership</span>
+          <b>Free member</b>
+        </div>
+
+        <div>
+          <span>Coin balance</span>
+          <b>{coins.toLocaleString()} coins</b>
+        </div>
+      </div>
+
+      <button
+        className="primary-btn full"
+        onClick={() => {
+          const name = displayName.trim();
+
+          if (!name) {
+            notify('Please enter your display name.');
+            return;
+          }
+
+          try {
+            localStorage.setItem('noshers-display-name', name);
+            if (profilePhoto) {
+              localStorage.setItem('noshers-profile-photo', profilePhoto);
+            } else {
+              localStorage.removeItem('noshers-profile-photo');
+            }
+
+            setDisplayName(name);
+            setShowProfile(false);
+            notify('Profile saved successfully!');
+          } catch {
+            notify('Photo could not be saved. Choose a smaller image.');
+          }
+        }}
+      >
+        <Camera size={17}/> Save profile
+      </button>
+    </div>
+  </div>
+)}
 
       {toast && <div className="toast"><Sparkles size={16}/>{toast}</div>}
     </div>
