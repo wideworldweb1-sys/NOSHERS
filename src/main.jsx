@@ -160,7 +160,16 @@ room.on(RoomEvent.DataReceived, (payload, participant) => {
           sender: senderName
         }
       ]);
-
+      if (
+        message.gift.name === 'Crown' ||
+        message.gift.name === 'Galaxy'
+      ) {
+        setActivePremiumGift({
+          ...message.gift,
+          sender: senderName,
+          id: Date.now()
+        });
+      }
       notify(
         `${message.gift.emoji} ${senderName} sent ${message.gift.name}!`
       );
