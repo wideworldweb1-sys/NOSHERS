@@ -4,3 +4,34 @@
 @media(max-width:1100px){.sidebar{width:220px}.main{margin-left:220px}.content,.room-page{padding-left:25px;padding-right:25px}.topbar{padding:0 25px}.hero-art{width:240px}.room-columns{grid-template-columns:1fr}.chat-messages{min-height:140px}.vip-grid{gap:8px}.vip-card{padding:15px}}
 @media(max-width:780px){.sidebar{display:none}.main{margin:0;padding-bottom:68px}.topbar{height:64px;padding:0 17px}.mobile-brand{display:flex;align-items:center;gap:8px;font:800 15px Manrope;letter-spacing:1px}.mobile-brand .brand-mark{width:32px;height:32px;border-radius:10px}.breadcrumb{display:none}.top-actions{gap:8px}.search{width:min(38vw,200px);padding:9px}.search input{font-size:10px}.user-chip{display:none}.content,.room-page{padding:26px 17px 32px}.welcome-row{min-height:0}.welcome-row h1{font-size:34px}.hero-art{width:150px;height:155px;transform:scale(.8);margin-right:-15px}.art-center{width:80px;height:80px;border-radius:26px}.art-center svg{width:40px}.ring-one{width:160px;height:135px}.ring-two{width:180px;height:100px}.float-chip{font-size:8px;padding:7px}.chip-a{right:-4px}.chip-b{left:-12px}.chip-c{right:-8px}.stats-row{margin:24px 0 31px;padding:13px 10px}.stats-row>div{padding-left:9px;gap:7px}.stat-icon{width:30px;height:30px}.stats-row b{font-size:14px}.stats-row small{font-size:8px}.room-grid{gap:11px}.card-art{height:112px;padding:9px}.room-card-body{padding:12px}.room-card h3{font-size:12px}.room-card-body>p{font-size:10px;min-height:26px}.host-label{font-size:9px}.gift-promo{padding:15px;gap:11px;flex-wrap:wrap}.promo-icon{width:43px;height:43px}.gift-promo>div:nth-child(2){min-width:calc(100% - 60px)}.gift-promo h2{font-size:15px}.gift-promo .secondary-btn{margin-left:54px}.vip-banner{padding:25px;min-height:250px}.vip-orb{right:8%;top:10%;width:72px;height:72px;border-radius:25px}.vip-orb svg{width:25px}.vip-banner h1{max-width:75%;font-size:29px}.vip-banner p{max-width:78%;font-size:11px}.vip-grid{grid-template-columns:1fr}.vip-card{padding:20px}.vip-card p{min-height:0}.vip-card ul{margin:10px 0}.room-hero{padding:17px}.room-hero-content{gap:12px;margin:22px 0}.avatar-xl{width:52px;height:52px;border-radius:17px;font-size:19px}.room-hero h1{font-size:23px}.room-meta{flex-wrap:wrap;gap:8px}.room-columns{gap:11px}.panel{padding:14px}.speaker-grid{gap:5px}.room-controls{gap:6px}.room-controls .secondary-btn,.mic-button{font-size:9px;padding:9px}.notice{line-height:1.6}footer{padding:16px 18px;flex-wrap:wrap;justify-content:center}footer span:last-child{display:none}.mobile-nav{position:fixed;display:flex;inset:auto 0 0;height:67px;background:#100d17f5;border-top:1px solid #30263b;z-index:20;justify-content:space-around;padding-bottom:env(safe-area-inset-bottom);backdrop-filter:blur(15px)}.mobile-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex:1;background:none;color:#7f748e}.mobile-nav button small{font-size:8px}.mobile-nav button.mobile-active{color:#c7a8ff}.mobile-nav button:nth-child(3){color:#1c1329}.mobile-nav button:nth-child(3) svg{background:linear-gradient(135deg,#c9b0ff,#9b71e2);width:36px;height:30px;padding:6px;border-radius:10px}.toast{left:50%;bottom:82px}}
 @media(max-width:430px){.welcome-row h1{font-size:30px}.welcome-row p{font-size:11px}.welcome-actions{flex-wrap:wrap}.hero-art{width:115px;margin-right:-20px;transform:scale(.68)}.stats-row>div{flex-direction:column;align-items:flex-start;gap:5px}.stats-row{padding:12px 8px}.room-grid{grid-template-columns:1fr}.card-art{height:128px}.room-card-body>p{min-height:0}.section-heading h2{font-size:18px}.section-heading p{max-width:240px}.gift-promo .secondary-btn{margin-left:0}.room-hero h1{font-size:19px}.room-meta{font-size:9px}.room-controls>*{flex:1}.speaker-avatar{width:47px;height:47px}.speaker-grid{grid-template-columns:repeat(3,1fr)}.search{width:150px}.search input{min-width:0}.top-actions{gap:5px}.icon-btn{display:none}.gift-grid{gap:5px}.gift-tile{padding:10px 2px}.gift-tile>span{font-size:23px}}
+
+/* NOSHERS gift animations */
+.gift-feed {
+  position: relative;
+  overflow: hidden;
+  animation: noshersGiftRise 4s ease-out both;
+  border: 1px solid #b98aff55;
+  box-shadow: 0 0 18px #b98aff22;
+  font-size: 14px;
+  padding: 12px;
+}
+
+@keyframes noshersGiftRise {
+  0% {
+    opacity: 0;
+    transform: translateY(45px) scale(0.75);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0) scale(1.08);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-55px) scale(0.9);
+  }
+}
+
