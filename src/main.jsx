@@ -421,7 +421,13 @@ async function createRoom(e) {
       ...prev,
       { ...gift, sender: 'You' }
     ]);
-
+if (gift.name === 'Crown' || gift.name === 'Galaxy') {
+  setActivePremiumGift({
+    ...gift,
+    sender: 'You',
+    id: Date.now()
+  });
+}
     notify(`${gift.emoji} ${gift.name} sent!`);
   } catch (error) {
     console.error('Gift send error:', error);
