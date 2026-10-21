@@ -16,25 +16,48 @@
   padding: 12px;
 }
 
+/* NOSHERS Animated Gift Feed */
+.gift-feed {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  animation: noshersGiftRise 3.5s cubic-bezier(.2, .8, .2, 1) both;
+  border: 1px solid #d8a6ff99;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #30213d, #593079, #30213d);
+  background-size: 200% 100%;
+  box-shadow: 0 0 12px #b98aff66, inset 0 0 12px #e6a8ff22;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 14px;
+  margin: 8px 0;
+  transform-origin: center;
+}
+
 @keyframes noshersGiftRise {
   0% {
     opacity: 0;
-    transform: translateY(45px) scale(0.75);
+    transform: translateY(30px) scale(.8);
+    background-position: 100% 0;
   }
-  15% {
+  18% {
     opacity: 1;
-    transform: translateY(0) scale(1.08);
+    transform: translateY(0) scale(1.06);
+  }
+  35% {
+    transform: translateY(0) scale(1);
   }
   75% {
     opacity: 1;
-    transform: translateY(-20px) scale(1);
+    transform: translateY(-4px) scale(1);
+    background-position: 0 0;
   }
   100% {
     opacity: 0;
-    transform: translateY(-55px) scale(0.9);
+    transform: translateY(-24px) scale(.96);
   }
 }
-
 /* NOSHERS Premium Gift Cinematic Animation */
 .premium-gift-overlay {
   position: fixed;
