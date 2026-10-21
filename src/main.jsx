@@ -54,7 +54,7 @@ const [authLoading, setAuthLoading] = useState(false);
   const [toast, setToast] = useState('');
   const [coins, setCoins] = useState(1200);
   const [sentGifts, setSentGifts] = useState([]);
-  
+  const [activePremiumGift, setActivePremiumGift] = useState(null);
   const [liveKitRoom, setLiveKitRoom] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
 const [speakerRequests, setSpeakerRequests] = useState([]);
@@ -663,7 +663,11 @@ async function toggleRaiseHand() {
 </div>
 </div>
 
-              <div className="chat-panel panel"><div className="panel-heading"><h2>Room chat</h2><span>Community</span></div><div className="chat-messages"><div className="chat-line"><span className="chat-avatar ca1">M</span><p><b>Mira</b><span>Welcome in, everyone 💜</span></p><small>now</small></div><div className="chat-line"><span className="chat-avatar ca2">Z</span><p><b>Zayn</b><span>Love this vibe ✨</span></p><small>1m</small></div><div className="chat-line"><span className="chat-avatar ca3">L</span><p><b>Luna</b><span>What are we talking about tonight?</span></p><small>2m</small></div>{sentGifts.map((g,i)=><div className="gift-feed" key={i}>{g.emoji} You sent {g.name}</div>)}</div><form className="chat-input" onSubmit={e => {e.preventDefault(); notify('Text chat will be enabled with account and backend setup.')}}><input placeholder="Say something kind..." /><button aria-label="Send message"><ChevronRight size={18}/></button></form></div>
+              <div className="chat-panel panel"><div className="panel-heading"><h2>Room chat</h2><span>Community</span></div><div className="chat-messages"><div className="chat-line"><span className="chat-avatar ca1">M</span><p><b>Mira</b><span>Welcome in, everyone 💜</span></p><small>now</small></div><div className="chat-line"><span className="chat-avatar ca2">Z</span><p><b>Zayn</b><span>Love this vibe ✨</span></p><small>1m</small></div><div className="chat-line"><span className="chat-avatar ca3">L</span><p><b>Luna</b><span>What are we talking about tonight?</span></p><small>2m</small></div>{sentGifts.map((g, i) => (
+  <div className="gift-feed" key={i}>
+    {g.emoji} {g.sender === 'You' ? 'You sent' : `${g.sender} sent`} {g.name}
+  </div>
+))}</div><form className="chat-input" onSubmit={e => {e.preventDefault(); notify('Text chat will be enabled with account and backend setup.')}}><input placeholder="Say something kind..." /><button aria-label="Send message"><ChevronRight size={18}/></button></form></div>
             </div>
             <div className="notice"><ShieldCheck size={17}/><span><b>Safe spaces matter.</b> Report, block, and moderation tools are part of the production launch checklist.</span></div>
           </section>
