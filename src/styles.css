@@ -35,3 +35,92 @@
   }
 }
 
+/* NOSHERS Premium Gift Cinematic Animation */
+.premium-gift-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, #642c91dd 0%, #170b2df2 48%, #05030bf5 100%);
+  backdrop-filter: blur(8px);
+  animation: premiumGiftBackdrop 0.7s ease-out both;
+}
+
+.premium-gift-content {
+  position: relative;
+  z-index: 1;
+  width: min(90vw, 520px);
+  padding: 32px 20px;
+  text-align: center;
+  color: white;
+  animation: premiumGiftEntrance 1s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.premium-gift-emoji {
+  font-size: clamp(100px, 24vw, 180px);
+  line-height: 1.2;
+  margin: 18px 0;
+  filter: drop-shadow(0 0 30px #e6a8ff);
+  animation: premiumGiftPulse 1.5s ease-in-out infinite alternate;
+}
+
+.premium-gift-content h1 {
+  margin: 12px 0;
+  font-size: clamp(36px, 9vw, 64px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-shadow: 0 0 24px #e2a7ff;
+}
+
+.premium-gift-content p {
+  font-size: 17px;
+  color: #f0dcff;
+}
+
+.premium-gift-sparkles {
+  color: #ffe6a3;
+  font-size: 32px;
+  letter-spacing: 18px;
+  animation: premiumGiftSparkle 2s ease-in-out infinite alternate;
+}
+
+@keyframes premiumGiftBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes premiumGiftEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.45) translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes premiumGiftPulse {
+  from {
+    transform: scale(0.94) rotate(-4deg);
+  }
+  to {
+    transform: scale(1.08) rotate(4deg);
+  }
+}
+
+@keyframes premiumGiftSparkle {
+  from {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
