@@ -716,6 +716,25 @@ async function toggleRaiseHand() {
 
       {showGifts && <div className="modal-backdrop" onClick={() => setShowGifts(false)}><div className="modal gifts-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowGifts(false)}><X size={18}/></button><span className="modal-icon gift-modal-icon"><Gift size={23}/></span><span className="eyebrow">SPREAD THE GOOD ENERGY</span><h2>Send a little love</h2><p>Choose a gift to send into the room.</p><div className="gift-grid">{gifts.map(g=><button key={g.name} className="gift-tile" onClick={() => sendGift(g)}><span>{g.emoji}</span><b>{g.name}</b><small><Coins size={13}/>{g.coins}</small></button>)}</div><div className="coin-balance"><Coins size={17}/> Balance <b>{coins.toLocaleString()} coins</b></div><small className="modal-footnote">Demo wallet only. Purchases and real-money transactions are not enabled.</small></div></div>}
 
+{activePremiumGift && (
+  <div
+    className="premium-gift-overlay"
+    key={activePremiumGift.id}
+  >
+    <div className="premium-gift-content">
+      <div className="premium-gift-sparkles">✦ ✧ ✦</div>
+      <div className="premium-gift-emoji">
+        {activePremiumGift.emoji}
+      </div>
+      <h1>{activePremiumGift.name}</h1>
+      <p>
+        {activePremiumGift.sender} sent a premium gift!
+      </p>
+      <div className="premium-gift-sparkles">✧ ✦ ✧</div>
+    </div>
+  </div>
+)}
+
 {showProfile && (
   <div className="modal-backdrop" onClick={() => setShowProfile(false)}>
     <div className="modal profile-modal" onClick={e => e.stopPropagation()}>
