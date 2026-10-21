@@ -55,6 +55,15 @@ const [authLoading, setAuthLoading] = useState(false);
   const [coins, setCoins] = useState(1200);
   const [sentGifts, setSentGifts] = useState([]);
   const [activePremiumGift, setActivePremiumGift] = useState(null);
+  useEffect(() => {
+  if (!activePremiumGift) return;
+
+  const timer = setTimeout(() => {
+    setActivePremiumGift(null);
+  }, 8000);
+
+  return () => clearTimeout(timer);
+}, [activePremiumGift]);
   const [liveKitRoom, setLiveKitRoom] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
 const [speakerRequests, setSpeakerRequests] = useState([]);
