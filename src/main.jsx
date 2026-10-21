@@ -390,7 +390,8 @@ async function createRoom(e) {
   }
 }
 
-  async function sendGift(gift) {
+
+async function sendGift(gift) {
   if (coins < gift.coins) {
     return notify('Not enough coins.');
   }
@@ -417,23 +418,26 @@ async function createRoom(e) {
     });
 
     setCoins((prev) => prev - gift.coins);
-    setSentGifts((prev) => [
-      ...prev,
-      { ...gift, sender: 'You' }
-    ]);
-if (gift.name === 'Crown' || gift.name === 'Galaxy') {
-  setActivePremiumGift({
-    ...gift,
-    sender: 'You',
-    id: Date.now()
-  });
-}
+
+    const newGift = {
+      ...gift,
+      sender: 'You',
+      id: Date.now()
+    };
+
+    setSentGifts((prev) => [...prev, newGift]);
+
+    if (gift.name === 'Crown' || gift.name === 'Galaxy') {
+      setActivePremiumGift(newGift);
+    }
+
     notify(`${gift.emoji} ${gift.name} sent!`);
   } catch (error) {
     console.error('Gift send error:', error);
     notify('Gift could not be sent. Please try again.');
   }
 }
+
   async function toggleMicrophone() {
     if (!liveKitRoom || connectionStatus !== 'Connected') {
       notify('Voice room is not connected yet.');
