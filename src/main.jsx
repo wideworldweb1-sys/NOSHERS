@@ -413,7 +413,78 @@ async function createRoom(e) {
     notify('Room save failed. Please check the server.');
   }
 }
+async function syncMicSeatAssignments(assignments) {
+  if (!liveKitRoom || connectionStatus !== 'Connected') {
+    notify('Join a voice room before using mic seats.');
+    return;
+  }
 
+  try {
+    const message = new TextEncoder().encode(
+      JSON.stringify({
+        type: 'mic_seat_assignments',
+        assignments
+      })
+    );
+
+    await liveKitRoom.localParticipant.publishData(message, {
+      reliable: true
+    });
+
+    setMicSeatAssignments(assignments);
+  } catch (error) {
+    console.error('Mic seat update error:', error);
+    notify('Could not update mic seats. Please try again.');
+  }
+}
+
+async function takeMicSeat(seatNumber) {
+  if (!liveKitRoom || connectionStatus !== 'Connected') {
+    return notify('Join a voice room first.');
+  }
+
+  const identity = liveKitRoom.localParticipant.identity;
+
+  if (micSeatAssignments.some(seat => seat.identity === identity)) {
+    return notify('Leave your current mic seat first.');
+  }
+
+  if (micSeatAssignments.some(seat => seat.seatNumber === seatNumber)) {
+    return notify('This mic seat is already occupied.');
+  }
+
+  const newAssignment = {
+    seatNumber,
+    identity,
+    name:
+      liveKitRoom.localParticipant.name ||
+      displayName ||
+      'Participant'
+  };
+
+  await syncMicSeatAssignments([
+    ...micSeatAssignments,
+    newAssignment
+  ]);
+}
+
+async function leaveMicSeat() {
+  if (!liveKitRoom || connectionStatus !== 'Connected') {
+    return notify('Join a voice room first.');
+  }
+
+  const identity = liveKitRoom.localParticipant.identity;
+
+  if (!micSeatAssignments.some(seat => seat.identity === identity)) {
+    return notify('You are not sitting on a mic seat.');
+  }
+
+  const remainingAssignments = micSeatAssignments.filter(
+    seat => seat.identity !== identity
+  );
+
+  await syncMicSeatAssignments(remainingAssignments);
+}
 
 
 async function sendGift(gift) {
