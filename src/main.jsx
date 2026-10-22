@@ -160,37 +160,37 @@ room.on(RoomEvent.DataReceived, (payload, participant) => {
           : `${name} lowered their hand`
       );
     }
-    if (message.type === 'gift' && message.gift) {
-      const senderName =
-        message.senderName ||
-        participant?.name ||
-        participant?.identity ||
-        'Someone';
 
-      setSentGifts((prev) => [
-        ...prev,
-        {
-          ...message.gift,
-          sender: senderName
-        }
-      ]);
-      if (
-        message.gift.name === 'Crown' ||
-        message.gift.name === 'Galaxy'
-      ) {
-        setActivePremiumGift({
-          ...message.gift,
-          sender: senderName,
-          id: Date.now()
-        });
-      }
-      notify(
-        `${message.gift.emoji} ${senderName} sent ${message.gift.name}!`
-      );
-    }
-  } catch (error) {
-    console.error('Raise hand message error:', error);
+if (message.type === 'gift' && message.gift) {
+  const senderName =
+    message.senderName ||
+    participant?.name ||
+    participant?.identity ||
+    'Someone';
+
+  const recipientName = message.recipientName || 'the room';
+
+  const newGift = {
+    ...message.gift,
+    sender: senderName,
+    recipient: recipientName,
+    id: Date.now()
+  };
+
+  setSentGifts((prev) => [...prev, newGift]);
+
+  if (
+    message.gift.name === 'Crown' ||
+    message.gift.name === 'Galaxy'
+  ) {
+    setActivePremiumGift(newGift);
   }
+
+  notify(
+    `${message.gift.emoji} ${senderName} sent ${message.gift.name} to ${recipientName}!`
+  );
+}
+
 });
 
 room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
