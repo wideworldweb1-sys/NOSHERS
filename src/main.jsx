@@ -791,7 +791,7 @@ async function toggleRaiseHand() {
       </div>
       <h1>{activePremiumGift.name}</h1>
       <p>
-        {activePremiumGift.sender} sent a premium gift!
+        {activePremiumGift.sender} sent {activePremiumGift.name} to {activePremiumGift.recipient || 'the room'}!
       </p>
       <div className="premium-gift-sparkles">✧ ✦ ✧</div>
     </div>
