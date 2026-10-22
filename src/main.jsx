@@ -726,7 +726,9 @@ async function toggleRaiseHand() {
 
               <div className="chat-panel panel"><div className="panel-heading"><h2>Room chat</h2><span>Community</span></div><div className="chat-messages"><div className="chat-line"><span className="chat-avatar ca1">M</span><p><b>Mira</b><span>Welcome in, everyone 💜</span></p><small>now</small></div><div className="chat-line"><span className="chat-avatar ca2">Z</span><p><b>Zayn</b><span>Love this vibe ✨</span></p><small>1m</small></div><div className="chat-line"><span className="chat-avatar ca3">L</span><p><b>Luna</b><span>What are we talking about tonight?</span></p><small>2m</small></div>{sentGifts.map((g, i) => (
   <div className="gift-feed" key={i}>
-    {g.emoji} {g.sender === 'You' ? 'You sent' : `${g.sender} sent`} {g.name}
+    
+{g.emoji} {g.sender === 'You' ? 'You sent' : `${g.sender} sent`} {g.name} to {g.recipient || 'the room'}
+
   </div>
 ))}</div><form className="chat-input" onSubmit={e => {e.preventDefault(); notify('Text chat will be enabled with account and backend setup.')}}><input placeholder="Say something kind..." /><button aria-label="Send message"><ChevronRight size={18}/></button></form></div>
             </div>
