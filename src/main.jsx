@@ -68,7 +68,7 @@ const [authLoading, setAuthLoading] = useState(false);
   const [liveKitRoom, setLiveKitRoom] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
 const [speakerRequests, setSpeakerRequests] = useState([]);
-
+const [micSeatAssignments, setMicSeatAssignments] = useState([]);
 const [isHandRaised, setIsHandRaised] = useState(false);
 
 const [mutedParticipants, setMutedParticipants] = useState([]);
@@ -130,7 +130,12 @@ room.on(RoomEvent.Disconnected, () => {
 room.on(RoomEvent.DataReceived, (payload, participant) => {
   try {
     const message = JSON.parse(new TextDecoder().decode(payload));
-
+if (
+  message.type === 'mic_seat_assignments' &&
+  Array.isArray(message.assignments)
+) {
+  setMicSeatAssignments(message.assignments);
+}
     if (message.type === 'hand_raise') {
       const name =
         message.name ||
