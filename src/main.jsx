@@ -729,7 +729,25 @@ async function toggleRaiseHand() {
 
       {showCreate && <div className="modal-backdrop" onClick={() => setShowCreate(false)}><div className="modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowCreate(false)}><X size={18}/></button><span className="modal-icon"><Mic size={23}/></span><span className="eyebrow">BRING PEOPLE TOGETHER</span><h2>Create your room</h2><p>Give your conversation a name and invite the world in.</p><form onSubmit={createRoom}><label>Room name<input value={roomTitle} onChange={e=>setRoomTitle(e.target.value)} required maxLength={70} placeholder="e.g. After Hours ☾"/></label><label>What's the vibe? <input value={roomTopic} onChange={e=>setRoomTopic(e.target.value)} maxLength={100} placeholder="Music, stories, late night talks..."/></label><button className="primary-btn full" type="submit"><Plus size={17}/> Create room</button></form><small className="modal-footnote">Demo mode: real-time voice needs LiveKit credentials and a token server.</small></div></div>}
 
-      {showGifts && <div className="modal-backdrop" onClick={() => setShowGifts(false)}><div className="modal gifts-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowGifts(false)}><X size={18}/></button><span className="modal-icon gift-modal-icon"><Gift size={23}/></span><span className="eyebrow">SPREAD THE GOOD ENERGY</span><h2>Send a little love</h2><p>Choose a gift to send into the room.</p><div className="gift-grid">{gifts.map(g=><button key={g.name} className="gift-tile" onClick={() => sendGift(g)}><span>{g.emoji}</span><b>{g.name}</b><small><Coins size={13}/>{g.coins}</small></button>)}</div><div className="coin-balance"><Coins size={17}/> Balance <b>{coins.toLocaleString()} coins</b></div><small className="modal-footnote">Demo wallet only. Purchases and real-money transactions are not enabled.</small></div></div>}
+      {showGifts && <div className="modal-backdrop" onClick={() => setShowGifts(false)}><div className="modal gifts-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowGifts(false)}><X size={18}/></button><span className="modal-icon gift-modal-icon"><Gift size={23}/></span><span className="eyebrow">SPREAD THE GOOD ENERGY</span><h2>Send a little love</h2>
+<p>Choose who you want to send a gift to.</p>
+
+<label className="gift-recipient-label">
+  Select a member
+  <select
+    value={selectedGiftRecipient}
+    onChange={(e) => setSelectedGiftRecipient(e.target.value)}
+  >
+    <option value="">Choose a member...</option>
+    {liveKitRoom &&
+      Array.from(liveKitRoom.remoteParticipants.values()).map((p) => (
+        <option key={p.identity} value={p.identity}>
+          {p.name || p.identity}
+        </option>
+      ))}
+  </select>
+</label>
+<div className="gift-grid">{gifts.map(g=><button key={g.name} className="gift-tile" onClick={() => sendGift(g)}><span>{g.emoji}</span><b>{g.name}</b><small><Coins size={13}/>{g.coins}</small></button>)}</div><div className="coin-balance"><Coins size={17}/> Balance <b>{coins.toLocaleString()} coins</b></div><small className="modal-footnote">Demo wallet only. Purchases and real-money transactions are not enabled.</small></div></div>}
 
 {activePremiumGift && (
   <div
