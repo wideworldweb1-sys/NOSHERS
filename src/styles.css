@@ -179,90 +179,254 @@
   font-size: 13px;
 }
 
-.mic-seat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-  gap: 12px;
+/* NOSHERS — Premium Circular Mic Seats */
+
+.mic-seats-section {
+  margin-top: 10px;
+  padding: 16px 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
-.mic-seat {
-  min-width: 0;
-  min-height: 138px;
-  padding: 16px 10px;
+.mic-seats-section .panel-heading {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  flex-direction: column;
-  text-align: center;
-  border-radius: 16px;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.mic-seat-empty {
-  border: 1px dashed rgba(167, 139, 250, 0.45);
-  background: rgba(139, 92, 246, 0.07);
-  color: #c4b5fd;
+.mic-seats-section .panel-heading h2 {
+  margin: 0;
+  color: #f4edff;
+  font-size: 18px;
+}
+
+.mic-seats-section .panel-heading span {
+  color: #c8b7ff;
+  font-size: 13px;
+}
+
+/* Five seats across on desktop */
+
+.mic-seat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px 8px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Individual microphone seat */
+
+.mic-seat {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 148px;
+  padding: 20px 3px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  flex-direction: column;
+  text-align: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: transform 0.2s ease;
+}
+
+/* Circular glowing microphone ring */
+
+.mic-seat::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 2px;
+  left: 50%;
+  width: 76px;
+  height: 76px;
+  transform: translateX(-50%);
+  border: 1.5px solid #edbd68;
+  border-radius: 50%;
+  outline: 3px dotted rgba(255, 194, 105, 0.65);
+  outline-offset: 4px;
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(70, 42, 91, 0.65),
+      rgba(7, 8, 25, 0.97) 72%
+    );
+  box-shadow:
+    0 0 10px rgba(255, 190, 92, 0.35),
+    0 0 24px rgba(130, 73, 255, 0.22),
+    inset 0 0 16px rgba(139, 92, 246, 0.14);
+}
+
+/* Glowing line beneath each mic */
+
+.mic-seat::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  width: 34px;
+  height: 3px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    #833cff,
+    #f4c36e,
+    #a15aff
+  );
+  box-shadow:
+    0 0 7px rgba(168, 85, 247, 0.8),
+    0 0 13px rgba(255, 190, 92, 0.35);
+}
+
+/* Keep the mic icon and text above the ring */
+
+.mic-seat > svg {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-top: 5px;
+  color: #f2c574;
+  filter: drop-shadow(0 0 5px rgba(255, 193, 98, 0.55));
+}
+
+.mic-seat-occupied > svg {
+  color: #f5d18b;
+}
+
+.mic-seat-empty > svg {
+  color: #c5a5ff;
+  filter: drop-shadow(0 0 6px rgba(168, 85, 247, 0.75));
+}
+
+/* User name or mic number */
+
+.mic-seat > b {
+  position: relative;
+  z-index: 1;
+  display: block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+/* Occupied seat */
+
+.mic-seat-occupied::before {
+  border-color: #f3c36f;
+  box-shadow:
+    0 0 12px rgba(255, 192, 96, 0.45),
+    0 0 22px rgba(139, 92, 246, 0.3),
+    inset 0 0 18px rgba(255, 190, 92, 0.12);
+}
+
+/* Empty seat */
+
+.mic-seat-empty::before {
+  border-color: rgba(202, 165, 255, 0.95);
+  box-shadow:
+    0 0 12px rgba(139, 92, 246, 0.4),
+    0 0 20px rgba(139, 92, 246, 0.2),
+    inset 0 0 16px rgba(139, 92, 246, 0.12);
 }
 
 .mic-seat-empty:hover {
   transform: translateY(-3px);
-  border-color: #a78bfa;
-  background: rgba(139, 92, 246, 0.16);
 }
 
-.mic-seat-occupied {
-  border: 1px solid rgba(167, 139, 250, 0.55);
-  background: linear-gradient(
-    145deg,
-    rgba(124, 58, 237, 0.24),
-    rgba(76, 29, 149, 0.16)
-  );
-  color: #f5f0ff;
-  box-shadow: inset 0 0 18px rgba(139, 92, 246, 0.06);
+.mic-seat-empty:hover::before {
+  border-color: #f3c36f;
+  box-shadow:
+    0 0 15px rgba(255, 190, 92, 0.5),
+    0 0 25px rgba(139, 92, 246, 0.35);
 }
 
-.mic-seat > svg {
-  color: #a78bfa;
-  flex-shrink: 0;
-}
+/* Take mic and Leave seat buttons */
 
-.mic-seat-occupied > svg {
-  color: #c4b5fd;
-}
-
-.mic-seat > b {
+.mic-seat .secondary-btn {
+  position: relative;
+  z-index: 1;
   max-width: 100%;
-  overflow-wrap: anywhere;
-  font-size: 13px;
+  padding: 5px 10px;
+  border: 1px solid rgba(183, 129, 255, 0.75);
+  border-radius: 999px;
+  background: linear-gradient(
+    110deg,
+    rgba(88, 28, 180, 0.95),
+    rgba(124, 58, 237, 0.92)
+  );
+  color: #ffffff;
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+}
+
+.mic-seat .secondary-btn:hover {
+  border-color: #e8c27a;
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+}
+
+.mic-seat .secondary-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .mic-seat > small {
-  color: #c4b5fd;
+  position: relative;
+  z-index: 1;
+  color: #d5c5ff;
   font-size: 11px;
 }
 
-.mic-seat .secondary-btn {
-  max-width: 100%;
-  font-size: 12px;
-}
+/* Tablet */
 
-@media (max-width: 480px) {
-  .mic-seats-section {
-    padding: 14px;
-    border-radius: 16px;
-  }
-
+@media (max-width: 700px) {
   .mic-seat-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 8px;
   }
 
   .mic-seat {
-    min-height: 125px;
-    padding: 12px 8px;
+    min-height: 144px;
+  }
+}
+
+/* Small mobile screens */
+
+@media (max-width: 380px) {
+  .mic-seat-grid {
+    gap: 12px 4px;
+  }
+
+  .mic-seat {
+    min-height: 137px;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+
+  .mic-seat::before {
+    width: 66px;
+    height: 66px;
+  }
+
+  .mic-seat .secondary-btn {
+    padding: 5px 7px;
+    font-size: 10px;
   }
 }
