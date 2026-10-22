@@ -115,10 +115,14 @@ const [isSpeaker, setIsSpeaker] = useState(false);
 
         room = new Room();
 
-        room.on(RoomEvent.Disconnected, () => {
-          setConnectionStatus('Disconnected');
-          setLiveKitRoom(null);
-        });
+      
+room.on(RoomEvent.Disconnected, () => {
+  setConnectionStatus('Disconnected');
+  setLiveKitRoom(null);
+  setSentGifts([]);
+  setActivePremiumGift(null);
+});
+
 
         await room.connect(data.url, data.token);
 
