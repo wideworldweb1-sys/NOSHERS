@@ -360,8 +360,11 @@ async function createRoom(e) {
     speakers: ['You'],
     tag: 'YOUR ROOM',
     color: 'violet',
-    avatar: 'Y',
-    live: true
+        avatar: 'Y',
+    live: true,
+    level: 1,
+    micCount: 5,
+    unlockedMaxMics: 5
   };
 
   const updatedRooms = [room, ...rooms];
