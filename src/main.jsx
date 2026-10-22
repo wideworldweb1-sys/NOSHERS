@@ -41,6 +41,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [showGifts, setShowGifts] = useState(false);
+  const [selectedGiftRecipient, setSelectedGiftRecipient] = useState('');
   const [showProfile, setShowProfile] = useState(false);
   const [displayName, setDisplayName] = useState(localStorage.getItem('noshers-display-name') || '');
 const [profilePhoto, setProfilePhoto] = useState(localStorage.getItem('noshers-profile-photo') || '');
