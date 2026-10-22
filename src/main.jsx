@@ -774,7 +774,63 @@ async function toggleRaiseHand() {
       </div>
     ))}
 </div>
+<div className="mic-seats-section">
+  <div className="panel-heading">
+    <h2>🎙️ Mic Seats</h2>
+    <span>
+      {micSeatAssignments.length}/{activeRoom.micCount || 5} occupied
+    </span>
+  </div>
 
+  <div className="mic-seat-grid">
+    {Array.from(
+      { length: Math.min(activeRoom.micCount || 5, activeRoom.unlockedMaxMics || 5) },
+      (_, i) => i + 1
+    ).map((seatNumber) => {
+      const assignment = micSeatAssignments.find(
+        (seat) => seat.seatNumber === seatNumber
+      );
+
+      const isMine =
+        assignment &&
+        assignment.identity === liveKitRoom?.localParticipant.identity;
+
+      return (
+        <div
+          className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'}`}
+          key={seatNumber}
+        >
+          <Mic size={24} />
+
+          <b>
+            {assignment ? assignment.name : `Mic ${seatNumber}`}
+          </b>
+
+          {assignment ? (
+            isMine ? (
+              <button
+                className="secondary-btn"
+                onClick={leaveMicSeat}
+              >
+                Leave seat
+              </button>
+            ) : (
+              <small>Occupied</small>
+            )
+          ) : (
+            <button
+              className="secondary-btn"
+              disabled={!liveKitRoom || connectionStatus !== 'Connected'}
+              onClick={() => takeMicSeat(seatNumber)}
+            >
+              Take mic
+            </button>
+          )}
+        </div>
+      );
+    })}
+  </div>
+</div>
 {speakerRequests.length > 0 && (
   <div className="panel-heading">
     <h2>✋ Raised hands</h2>
