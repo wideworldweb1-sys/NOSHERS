@@ -396,7 +396,12 @@ async function createRoom(e) {
 }
 
 
+
 async function sendGift(gift) {
+  if (!selectedGiftRecipient) {
+    return notify('Please select a member first.');
+  }
+
   if (coins < gift.coins) {
     return notify('Not enough coins.');
   }
@@ -405,16 +410,34 @@ async function sendGift(gift) {
     return notify('Join a voice room before sending gifts.');
   }
 
+  const recipient = liveKitRoom.remoteParticipants.get(
+    selectedGiftRecipient
+  );
+
+  if (!recipient) {
+    return notify('That member is no longer in the room. Please select again.');
+  }
+
   try {
+    const senderName =
+      liveKitRoom.localParticipant.name || 'Someone';
+
+    const recipientName =
+      recipient.name || recipient.identity;
+
+    const giftData = {
+      name: gift.name,
+      emoji: gift.emoji,
+      coins: gift.coins
+    };
+
     const message = new TextEncoder().encode(
       JSON.stringify({
         type: 'gift',
-        gift: {
-          name: gift.name,
-          emoji: gift.emoji,
-          coins: gift.coins
-        },
-        senderName: liveKitRoom.localParticipant.name || 'Someone'
+        gift: giftData,
+        senderName,
+        recipientIdentity: recipient.identity,
+        recipientName
       })
     );
 
@@ -425,8 +448,9 @@ async function sendGift(gift) {
     setCoins((prev) => prev - gift.coins);
 
     const newGift = {
-      ...gift,
+      ...giftData,
       sender: 'You',
+      recipient: recipientName,
       id: Date.now()
     };
 
@@ -436,12 +460,16 @@ async function sendGift(gift) {
       setActivePremiumGift(newGift);
     }
 
-    notify(`${gift.emoji} ${gift.name} sent!`);
+    setShowGifts(false);
+    setSelectedGiftRecipient('');
+
+    notify(`${gift.emoji} ${gift.name} sent to ${recipientName}!`);
   } catch (error) {
     console.error('Gift send error:', error);
     notify('Gift could not be sent. Please try again.');
   }
 }
+
 
   async function toggleMicrophone() {
     if (!liveKitRoom || connectionStatus !== 'Connected') {
