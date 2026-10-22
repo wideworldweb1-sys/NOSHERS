@@ -196,6 +196,9 @@ if (message.type === 'gift' && message.gift) {
   );
 }
 
+  } catch (error) {
+    console.error('Room data message error:', error);
+  }
 });
 
 room.on(RoomEvent.TrackSubscribed, (track, publication, participant) => {
