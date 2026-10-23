@@ -10,6 +10,22 @@ const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+async function verifySupabaseUser(req) {
+  const authorization = req.headers.authorization || '';
+  const match = authorization.match(/^Bearer\s+(.+)$/i);
+
+  if (!match) {
+    return { user: null, error: 'Missing authorization token.' };
+  }
+
+  const { data, error } = await supabase.auth.getUser(match[1]);
+
+  if (error || !data?.user) {
+    return { user: null, error: 'Invalid or expired session.' };
+  }
+
+  return { user: data.user, error: null };
+}
 const server = http.createServer(async (req, res) => {
     const pathname = new URL(req.url, 'http://localhost').pathname;
   console.log('REQUEST RECEIVED:', req.method, JSON.stringify(req.url));
@@ -116,7 +132,14 @@ const server = http.createServer(async (req, res) => {
           typeof participantName !== 'string' || !participantName.trim() || participantName.length > 80) {
         res.writeHead(400); return res.end(JSON.stringify({ error: 'Valid roomName and participantName are required.' }));
       }
-      // IMPORTANT: Production must authenticate the caller and authorize speaker/host roles here.
+      const { user, error: authError } = await verifySupabaseUser(req);
+
+if (authError || !user) {
+  res.writeHead(401);
+  return res.end(JSON.stringify({
+    error: 'Please sign in to join a voice room.'
+  }));
+}
       const token = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, {
         identity: `${participantName.trim().replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40) || 'guest'}-${crypto.randomUUID().slice(0, 8)}`,
         name: participantName.trim(),
