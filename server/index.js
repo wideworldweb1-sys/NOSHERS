@@ -18,6 +18,7 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
 
   if (req.method === 'OPTIONS') { res.writeHead(204); return res.end(); }
+  console.log('DEBUG ROUTE CHECK:', req.method, JSON.stringify(req.url), req.url === '/debug');
   if (req.url === '/debug') {
   res.writeHead(200);
   return res.end(JSON.stringify({
