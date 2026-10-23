@@ -28,6 +28,42 @@ const server = http.createServer(async (req, res) => {
     service: 'noshers-server'
   }));
 }
+  
+  if (pathname === '/api/room-progress' && req.method === 'GET') {
+    const roomId = new URL(req.url, 'http://localhost').searchParams.get('roomId');
+
+    if (!roomId || roomId.length > 100) {
+      res.writeHead(400);
+      return res.end(JSON.stringify({ error: 'Valid roomId is required.' }));
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('room_progress')
+        .select('room_id, room_xp, room_level, mic_count')
+        .eq('room_id', roomId)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Room progress read error:', error.message);
+        res.writeHead(500);
+        return res.end(JSON.stringify({ error: 'Could not load room progress.' }));
+      }
+
+      res.writeHead(200);
+      return res.end(JSON.stringify({
+        roomId,
+        roomXp: data?.room_xp ?? 0,
+        roomLevel: data?.room_level ?? 1,
+        micCount: data?.mic_count ?? 5
+      }));
+    } catch (error) {
+      console.error('Room progress API error:', error.message);
+      res.writeHead(500);
+      return res.end(JSON.stringify({ error: 'Server error loading room progress.' }));
+    }
+  }
+
   if (pathname === '/api/rooms' && req.method === 'GET') {
     res.writeHead(200);
     return res.end(JSON.stringify({ rooms: sharedRooms }));
