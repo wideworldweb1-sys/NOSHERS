@@ -32,7 +32,7 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200);
     return res.end(JSON.stringify({ rooms: sharedRooms }));
   }
-  if (req.url === '/api/rooms' && req.method === 'POST') {
+  if (pathname === '/api/rooms' && req.method === 'POST') {
     let body = '';
 
     req.on('data', chunk => {
