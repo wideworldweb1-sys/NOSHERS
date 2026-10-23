@@ -95,12 +95,17 @@ const [isSpeaker, setIsSpeaker] = useState(false);
     async function connectToLiveKit() {
       try {
         setConnectionStatus('Connecting...');
-
+const { data: { session } } = await supabase.auth.getSession();
         const response = await fetch(
           `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/livekit/token`,
           {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+   headers: {
+  'Content-Type': 'application/json',
+  ...(session?.access_token
+    ? { Authorization: `Bearer ${session.access_token}` }
+    : {})
+},
             body: JSON.stringify({
               roomName: activeRoom.title,
               participantName: localStorage.getItem('noshers-display-name') || `Guest-${Math.random().toString(36).slice(2, 6)}`
