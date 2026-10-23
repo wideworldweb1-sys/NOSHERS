@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import http from 'node:http';
 import { AccessToken } from 'livekit-server-sdk';
-
+import { createClient } from '@supabase/supabase-js';
 const PORT = Number(process.env.PORT || 3001);
 const LIVEKIT_API_KEY = process.env.LIVEKIT_API_KEY;
 const LIVEKIT_API_SECRET = process.env.LIVEKIT_API_SECRET;
