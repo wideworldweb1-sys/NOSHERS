@@ -28,7 +28,7 @@ const server = http.createServer(async (req, res) => {
     service: 'noshers-server'
   }));
 }
-  if (req.url === '/api/rooms' && req.method === 'GET') {
+  if (pathname === '/api/rooms' && req.method === 'GET') {
     res.writeHead(200);
     return res.end(JSON.stringify({ rooms: sharedRooms }));
   }
