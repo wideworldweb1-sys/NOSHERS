@@ -159,7 +159,12 @@ const server = http.createServer(async (req, res) => {
         );
 
         if (error) {
-          console.error('Room XP award error:', error.message);
+          console.error('Room XP award error:', JSON.stringify({
+  message: error.message,
+  code: error.code,
+  details: error.details,
+  hint: error.hint
+}));
           res.writeHead(400);
           return res.end(JSON.stringify({
             error: 'No eligible active session or XP could not be awarded.'
