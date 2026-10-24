@@ -45,7 +45,206 @@ const server = http.createServer(async (req, res) => {
   }));
 }
   
+  if (pathname === '/api/room-activity/start' && req.method === 'POST') {
+    const { user, error: authError } = await verifySupabaseUser(req);
+
+    if (authError || !user) {
+      res.writeHead(401);
+      return res.end(JSON.stringify({
+        error: 'Please sign in to track room activity.'
+      }));
+    }
+
+    let body = '';
+
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > 10_000) req.destroy();
+    });
+
+    req.on('end', async () => {
+      try {
+        const { roomId } = JSON.parse(body || '{}');
+
+        if (
+          typeof roomId !== 'string' ||
+          !roomId.trim() ||
+          roomId.length > 100
+        ) {
+          res.writeHead(400);
+          return res.end(JSON.stringify({
+            error: 'Valid roomId is required.'
+          }));
+        }
+
+        const { data: existing, error: lookupError } = await supabase
+          .from('room_activity_sessions')
+          .select('id')
+          .eq('room_id', roomId)
+          .eq('user_id', user.id)
+          .is('ended_at', null)
+          .maybeSingle();
+
+        if (lookupError) throw lookupError;
+
+        if (existing) {
+          res.writeHead(200);
+          return res.end(JSON.stringify({
+            ok: true,
+            message: 'Room activity session already active.'
+          }));
+        }
+
+        const { error: insertError } = await supabase
+          .from('room_activity_sessions')
+          .insert({
+            room_id: roomId,
+            user_id: user.id
+          });
+
+        if (insertError) throw insertError;
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({ ok: true }));
+      } catch (error) {
+        console.error('Room activity start error:', error.message);
+        res.writeHead(500);
+        return res.end(JSON.stringify({
+          error: 'Could not start room activity.'
+        }));
+      }
+    });
+
+    return;
+  }
+
+  if (pathname === '/api/room-activity/award' && req.method === 'POST') {
+    const { user, error: authError } = await verifySupabaseUser(req);
+
+    if (authError || !user) {
+      res.writeHead(401);
+      return res.end(JSON.stringify({
+        error: 'Please sign in to earn room XP.'
+      }));
+    }
+
+    let body = '';
+
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > 10_000) req.destroy();
+    });
+
+    req.on('end', async () => {
+      try {
+        const { roomId } = JSON.parse(body || '{}');
+
+        if (
+          typeof roomId !== 'string' ||
+          !roomId.trim() ||
+          roomId.length > 100
+        ) {
+          res.writeHead(400);
+          return res.end(JSON.stringify({
+            error: 'Valid roomId is required.'
+          }));
+        }
+
+        const { data, error } = await supabase.rpc(
+          'award_room_activity_xp',
+          {
+            p_room_id: roomId,
+            p_user_id: user.id
+          }
+        );
+
+        if (error) {
+          console.error('Room XP award error:', error.message);
+          res.writeHead(400);
+          return res.end(JSON.stringify({
+            error: 'No eligible active session or XP could not be awarded.'
+          }));
+        }
+
+        const result = data?.[0] || {};
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({
+          ok: true,
+          awardedXp: Number(result.awarded_xp || 0),
+          roomXp: Number(result.total_room_xp || 0)
+        }));
+      } catch (error) {
+        console.error('Room XP request error:', error.message);
+        res.writeHead(400);
+        return res.end(JSON.stringify({
+          error: 'Invalid room XP request.'
+        }));
+      }
+    });
+
+    return;
+  }
+
+
+  if (pathname === '/api/room-activity/end' && req.method === 'POST') {
+    const { user, error: authError } = await verifySupabaseUser(req);
+
+    if (authError || !user) {
+      res.writeHead(401);
+      return res.end(JSON.stringify({
+        error: 'Please sign in to end room activity.'
+      }));
+    }
+
+    let body = '';
+
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > 10_000) req.destroy();
+    });
+
+    req.on('end', async () => {
+      try {
+        const { roomId } = JSON.parse(body || '{}');
+
+        if (
+          typeof roomId !== 'string' ||
+          !roomId.trim() ||
+          roomId.length > 100
+        ) {
+          res.writeHead(400);
+          return res.end(JSON.stringify({
+            error: 'Valid roomId is required.'
+          }));
+        }
+
+        const { error } = await supabase
+          .from('room_activity_sessions')
+          .update({ ended_at: new Date().toISOString() })
+          .eq('room_id', roomId)
+          .eq('user_id', user.id)
+          .is('ended_at', null);
+
+        if (error) throw error;
+
+        res.writeHead(200);
+        return res.end(JSON.stringify({ ok: true }));
+      } catch (error) {
+        console.error('Room activity end error:', error.message);
+        res.writeHead(500);
+        return res.end(JSON.stringify({
+          error: 'Could not end room activity.'
+        }));
+      }
+    });
+
+    return;
+  }
+
+
   if (pathname === '/api/room-progress' && req.method === 'GET') {
+
     const roomId = new URL(req.url, 'http://localhost').searchParams.get('roomId');
 
     if (!roomId || roomId.length > 100) {
