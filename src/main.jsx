@@ -183,10 +183,18 @@ room.on(RoomEvent.Disconnected, () => {
           }
         );
 
+const activityStartResult = await activitySessionResponse.clone().json().catch(() => ({}));
+
+console.log(
+  'ROOM ACTIVITY START:',
+  activitySessionResponse.status,
+  activityStartResult
+);
+
 activityStarted = activitySessionResponse.ok;
 
 if (!activityStarted) {
-  console.error('Could not start room activity.');
+  console.error('Could not start room activity:', activityStartResult);
 }
 
 if (activityStarted && !cancelled) {
