@@ -576,6 +576,39 @@ async function createRoom(e) {
     notify('Room save failed. Please check the server.');
   }
 }
+  
+async function loadRoomProgress(roomId) {
+  if (!roomId) return;
+
+  setRoomProgressLoading(true);
+
+  try {
+    const serverUrl =
+      import.meta.env.VITE_TOKEN_SERVER_URL ||
+      'https://noshers-server.onrender.com';
+
+    const response = await fetch(
+      `${serverUrl}/api/room-progress?roomId=${encodeURIComponent(roomId)}`
+    );
+
+    if (!response.ok) {
+      throw new Error('Could not load room progress');
+    }
+
+    const data = await response.json();
+
+    setRoomProgress({
+      roomXp: Number(data.roomXp ?? 0),
+      roomLevel: Number(data.roomLevel ?? 1),
+      micCount: Number(data.micCount ?? 5)
+    });
+  } catch (error) {
+    console.error('Room progress load error:', error);
+  } finally {
+    setRoomProgressLoading(false);
+  }
+}
+
 async function syncMicSeatAssignments(assignments) {
   if (!liveKitRoom || connectionStatus !== 'Connected') {
     notify('Join a voice room before using mic seats.');
