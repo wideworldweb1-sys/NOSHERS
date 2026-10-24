@@ -90,8 +90,9 @@ const [isSpeaker, setIsSpeaker] = useState(false);
     }
 
     let room;
-    let cancelled = false;
-
+let cancelled = false;
+let activityStarted = false;
+let activityTimer = null;
     async function connectToLiveKit() {
       try {
         setConnectionStatus('Connecting...');
@@ -122,7 +123,41 @@ const { data: { session } } = await supabase.auth.getSession();
         room = new Room();
 
       
+
 room.on(RoomEvent.Disconnected, () => {
+  if (activityTimer !== null) {
+    clearInterval(activityTimer);
+    activityTimer = null;
+  }
+
+  if (activityStarted) {
+    activityStarted = false;
+
+    void (async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+
+        await fetch(
+          `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/room-activity/end`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(session?.access_token
+                ? { Authorization: `Bearer ${session.access_token}` }
+                : {})
+            },
+            body: JSON.stringify({
+              roomId: activeRoom.title
+            })
+          }
+        );
+      } catch (error) {
+        console.error('Could not end room activity:', error);
+      }
+    })();
+  }
+
   setConnectionStatus('Disconnected');
   setLiveKitRoom(null);
   setSentGifts([]);
@@ -131,6 +166,77 @@ room.on(RoomEvent.Disconnected, () => {
 
 
         await room.connect(data.url, data.token);
+      
+        const activitySessionResponse = await fetch(
+          `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/room-activity/start`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(session?.access_token
+                ? { Authorization: `Bearer ${session.access_token}` }
+                : {})
+            },
+            body: JSON.stringify({
+              roomId: activeRoom.title
+            })
+          }
+        );
+
+activityStarted = activitySessionResponse.ok;
+
+if (!activityStarted) {
+  console.error('Could not start room activity.');
+}
+
+if (activityStarted && !cancelled) {
+  activityTimer = setInterval(async () => {
+    if (cancelled || !activityStarted) {
+      clearInterval(activityTimer);
+      activityTimer = null;
+      return;
+    }
+
+    try {
+      const { data: { session: currentSession } } =
+        await supabase.auth.getSession();
+
+      if (!currentSession?.access_token) {
+        console.error('XP award skipped: user session missing.');
+        return;
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/room-activity/award`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${currentSession.access_token}`
+          },
+          body: JSON.stringify({
+            roomId: activeRoom.title
+          })
+        }
+      );
+
+      if (!response.ok) {
+        console.error('Room XP award request failed.');
+        return;
+      }
+
+      const result = await response.json();
+
+      if (result.awardedXp > 0) {
+        notify(`🎉 Room earned ${result.awardedXp} XP!`);
+      }
+    } catch (error) {
+      console.error('Room XP award error:', error);
+    }
+  }, 5 * 60 * 1000);
+}
+
+
 
 room.on(RoomEvent.DataReceived, (payload, participant) => {
   try {
@@ -271,11 +377,47 @@ room.on(RoomEvent.ParticipantDisconnected, () => {
 
     connectToLiveKit();
 
-    return () => {
-      cancelled = true;
-      if (room) room.disconnect();
-      setLiveKitRoom(null);
-    };
+   
+return () => {
+  cancelled = true;
+
+  if (activityTimer !== null) {
+    clearInterval(activityTimer);
+    activityTimer = null;
+  }
+
+  if (activityStarted) {
+    activityStarted = false;
+
+    void (async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+
+        await fetch(
+          `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/room-activity/end`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              ...(session?.access_token
+                ? { Authorization: `Bearer ${session.access_token}` }
+                : {})
+            },
+            body: JSON.stringify({
+              roomId: activeRoom.title
+            })
+          }
+        );
+      } catch (error) {
+        console.error('Could not end room activity during cleanup:', error);
+      }
+    })();
+  }
+
+  if (room) room.disconnect();
+  setLiveKitRoom(null);
+};
+
   }, [activeRoom?.title]);
 
 useEffect(() => {
