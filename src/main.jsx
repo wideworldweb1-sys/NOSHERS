@@ -73,7 +73,12 @@ const [isHandRaised, setIsHandRaised] = useState(false);
 
 const [mutedParticipants, setMutedParticipants] = useState([]);
 const [isSpeaker, setIsSpeaker] = useState(false);
-
+const [roomProgress, setRoomProgress] = useState({
+  roomXp: 0,
+  roomLevel: 1,
+  micCount: 5
+});
+const [roomProgressLoading, setRoomProgressLoading] = useState(false);
   useEffect(() => {
     document
       .querySelectorAll('audio[data-participant-identity]')
