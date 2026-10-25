@@ -13,7 +13,7 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 const initialRooms = [
-  { id: 1, title: 'Late Night Thoughts 🌙', topic: 'Deep talks • no judgment', host: 'Mira', listeners: 128, speakers: ['Mira', 'Zayn', 'Luna'], tag: 'TRENDING', color: 'rose', avatar: 'M', live: true },
+  { id: 1, title: 'Late Night Thoughts 🌙', topic: 'Deep talks • no judgment', host: 'Mira', listeners: 128, speakers: ['Mira', 'Zayn', 'Luna'], tag: 'TRENDING', color: 'rose', avatar: 'M', live: true, theme: 'dragon-lair' },
   { id: 2, title: 'The Midnight Lounge', topic: 'Music, stories & good energy', host: 'Ray', listeners: 86, speakers: ['Ray', 'Ayla', 'Noor'], tag: 'CHILL', color: 'blue', avatar: 'R', live: true },
   { id: 3, title: 'Unfiltered & Unbothered', topic: 'Real conversations only', host: 'Sana', listeners: 64, speakers: ['Sana', 'Kian'], tag: 'POPULAR', color: 'gold', avatar: 'S', live: true },
   { id: 4, title: 'Soft Hearts Club 💜', topic: 'Meet people, make connections', host: 'Ari', listeners: 42, speakers: ['Ari', 'Jules'], tag: 'NEW', color: 'violet', avatar: 'A', live: true },
@@ -923,7 +923,7 @@ async function toggleRaiseHand() {
         {activeRoom ? (
           <section className="room-page">
             <button className="back-link" onClick={() => setActiveRoom(null)}>← Back to discover</button>
-            <div className={`room-hero hero-${activeRoom.color}`}>
+            <div className={`room-hero hero-${activeRoom.color} ${activeRoom.theme === 'dragon-lair' ? 'theme-dragon-lair' : ''}`}>
               <div className="room-hero-glow"/>
               <div className="hero-top"><span className="live-badge"><span className="live-dot"/> LIVE ROOM</span><span className="room-tag">{activeRoom.tag}</span></div>
               <div className="room-hero-content"><span className={`avatar avatar-xl avatar-${activeRoom.color}`}>{activeRoom.avatar}</span><div><h1>{activeRoom.title}</h1><p>{activeRoom.topic}</p><div className="room-meta"><span><Users size={15}/>{activeRoom.listeners} listening</span><span>Hosted by {activeRoom.host}</span></div></div></div>
