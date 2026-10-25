@@ -417,6 +417,24 @@
     0 0 40px rgba(244, 195, 110, 0.18);
 }
 
+/* Speaking — subtle premium multicolor pulse */
+
+.mic-seat-speaking::before {
+  animation: noshersSpeakingPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes noshersSpeakingPulse {
+  0%, 100% {
+    filter: brightness(1);
+    transform: translateX(-50%) scale(1);
+  }
+
+  50% {
+    filter: brightness(1.35);
+    transform: translateX(-50%) scale(1.045);
+  }
+}
+
 /* Take mic and Leave seat buttons */
 
 .mic-seat .secondary-btn {
