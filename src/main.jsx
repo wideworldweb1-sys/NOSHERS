@@ -889,7 +889,17 @@ async function toggleRaiseHand() {
         </nav>
         <div className="side-label room-label">LIVE RIGHT NOW <span className="live-dot"/></div>
         <div className="sidebar-rooms">
-          {rooms.slice(0, 3).map(room => <button key={room.id} className="mini-room" onClick={() => setActiveRoom(room)}>
+          
+{rooms.slice(0, 3).map(room => (
+  <button
+    key={room.id}
+    className="mini-room"
+    onClick={() => {
+      setActiveRoom(room);
+      loadRoomProgress(room.id);
+    }}
+  >
+
             <span className={`avatar avatar-${room.color}`}>{room.avatar}</span><span className="mini-room-text"><b>{room.title}</b><small>{room.listeners} listening</small></span><span className="tiny-live"/>
           </button>)}
         </div>
@@ -917,6 +927,29 @@ async function toggleRaiseHand() {
               <div className="room-hero-glow"/>
               <div className="hero-top"><span className="live-badge"><span className="live-dot"/> LIVE ROOM</span><span className="room-tag">{activeRoom.tag}</span></div>
               <div className="room-hero-content"><span className={`avatar avatar-xl avatar-${activeRoom.color}`}>{activeRoom.avatar}</span><div><h1>{activeRoom.title}</h1><p>{activeRoom.topic}</p><div className="room-meta"><span><Users size={15}/>{activeRoom.listeners} listening</span><span>Hosted by {activeRoom.host}</span></div></div></div>
+              
+<div className="room-progress-card">
+  <div className="room-progress-top">
+    <span>🏆 Room Level {roomProgress.roomLevel}</span>
+    <span>{roomProgress.roomXp} XP</span>
+  </div>
+
+  <div className="room-progress-track">
+    <div
+      className="room-progress-fill"
+      style={{
+        width: `${roomProgress.roomXp % 100}%`
+      }}
+    />
+  </div>
+
+  <small>
+    {roomProgressLoading
+      ? 'Loading room progress...'
+      : `${100 - (roomProgress.roomXp % 100)} XP to next level`}
+  </small>
+</div>
+
               <div className="audio-status"><span className="wave"><i/><i/><i/><i/><i/><i/><i/></span><span>{connectionStatus}</span></div>
             </div>
             <div className="room-columns">
@@ -1089,7 +1122,13 @@ async function toggleRaiseHand() {
             <div className="welcome-row"><div><span className="eyebrow"><span className="live-dot"/> THE ROOM IS YOURS</span><h1>Good energy lives <em>here.</em></h1><p>Find your people. Join a conversation. Stay for the feeling.</p><div className="welcome-actions"><button className="primary-btn" onClick={() => setShowCreate(true)}><Plus size={17}/> Start a room</button><button className="secondary-btn" onClick={() => document.getElementById('rooms')?.scrollIntoView({behavior:'smooth'})}><Compass size={17}/> Explore rooms</button></div></div><div className="hero-art"><div className="art-ring ring-one"/><div className="art-ring ring-two"/><div className="art-center"><AudioLines size={54}/></div><span className="float-chip chip-a"><Radio size={15}/> Live now</span><span className="float-chip chip-b"><Headphones size={15}/> Your people</span><span className="float-chip chip-c">✦  Good energy</span></div></div>
             <div className="stats-row"><div><span className="stat-icon"><Radio size={17}/></span><span><b>{rooms.length + 18}</b><small>Live rooms</small></span></div><div><span className="stat-icon"><Users size={17}/></span><span><b>2.4k</b><small>People online</small></span></div><div><span className="stat-icon"><Sparkles size={17}/></span><span><b>Always</b><small>Something happening</small></span></div></div>
             <div className="section-heading" id="rooms"><div><span className="eyebrow">PICK YOUR VIBE</span><h2>Rooms worth staying for</h2><p>Conversations are better when you’re part of them.</p></div><button className="text-link" onClick={() => setSearch('')}>View all <ChevronRight size={16}/></button></div>
-            <div className="room-grid">{filteredRooms.map(room => <article className="room-card" key={room.id} onClick={() => {setActiveRoom(room); setMuted(true);}}><div className={`card-art card-${room.color}`}><span className="live-badge"><span className="live-dot"/> LIVE</span><span className="room-tag">{room.tag}</span><div className="card-orbit"><AudioLines size={32}/></div><div className="card-people">{room.speakers.slice(0,3).map((s,i)=><span className={`avatar avatar-${['rose','blue','gold'][i]}`} key={s}>{s[0]}</span>)}</div></div><div className="room-card-body"><h3>{room.title}</h3><p>{room.topic}</p><div className="card-footer"><span className="host-label">Hosted by <b>{room.host}</b></span><span className="listener-count"><Headphones size={14}/>{room.listeners}</span></div><div className="join-hover">Enter room <ChevronRight size={16}/></div></div></article>)}</div>
+            <div className="room-grid">{filteredRooms.map(room => <article className="room-card" key={room.id} 
+onClick={() => {
+  setActiveRoom(room);
+  setMuted(true);
+  loadRoomProgress(room.id);
+}}
+><div className={`card-art card-${room.color}`}><span className="live-badge"><span className="live-dot"/> LIVE</span><span className="room-tag">{room.tag}</span><div className="card-orbit"><AudioLines size={32}/></div><div className="card-people">{room.speakers.slice(0,3).map((s,i)=><span className={`avatar avatar-${['rose','blue','gold'][i]}`} key={s}>{s[0]}</span>)}</div></div><div className="room-card-body"><h3>{room.title}</h3><p>{room.topic}</p><div className="card-footer"><span className="host-label">Hosted by <b>{room.host}</b></span><span className="listener-count"><Headphones size={14}/>{room.listeners}</span></div><div className="join-hover">Enter room <ChevronRight size={16}/></div></div></article>)}</div>
             {filteredRooms.length === 0 && <div className="empty-state"><Search size={28}/><h2>No rooms found</h2><p>Try another search, or create a new room.</p><button className="primary-btn" onClick={() => setShowCreate(true)}>Create a room</button></div>}
             <div className="gift-promo"><div className="promo-icon"><Gift size={26}/></div><div><span className="eyebrow">MAKE SOMEONE'S DAY</span><h2>Small gift. Big energy.</h2><p>Send a little appreciation to the voices that make your day.</p></div><button className="secondary-btn" onClick={() => setShowGifts(true)}>Explore gifts <ChevronRight size={16}/></button></div>
           </section>
