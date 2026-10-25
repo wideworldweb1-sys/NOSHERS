@@ -286,6 +286,7 @@
 
 /* Circular glowing microphone ring */
 
+
 .mic-seat::before {
   content: "";
   position: absolute;
@@ -295,21 +296,33 @@
   width: 76px;
   height: 76px;
   transform: translateX(-50%);
-  border: 1.5px solid #edbd68;
+  border: 2px solid transparent;
   border-radius: 50%;
-  outline: 3px dotted rgba(255, 194, 105, 0.65);
+  outline: 3px dotted rgba(168, 85, 247, 0.8);
   outline-offset: 4px;
+
   background:
-    radial-gradient(
-      circle at 50% 30%,
-      rgba(70, 42, 91, 0.65),
-      rgba(7, 8, 25, 0.97) 72%
-    );
+    linear-gradient(
+      145deg,
+      rgba(16, 10, 35, 0.96),
+      rgba(7, 8, 25, 0.98)
+    ) padding-box,
+    conic-gradient(
+      from 0deg,
+      #a855f7,
+      #22d3ee,
+      #ec4899,
+      #f4c36e,
+      #a855f7
+    ) border-box;
+
   box-shadow:
-    0 0 10px rgba(255, 190, 92, 0.35),
-    0 0 24px rgba(130, 73, 255, 0.22),
-    inset 0 0 16px rgba(139, 92, 246, 0.14);
+    0 0 10px rgba(168, 85, 247, 0.45),
+    0 0 20px rgba(34, 211, 238, 0.22),
+    0 0 28px rgba(236, 72, 153, 0.18),
+    inset 0 0 16px rgba(168, 85, 247, 0.2);
 }
+
 
 /* Glowing line beneath each mic */
 
@@ -370,22 +383,25 @@
 
 /* Occupied seat */
 
+
 .mic-seat-occupied::before {
-  border-color: #f3c36f;
+  border-color: transparent;
   box-shadow:
-    0 0 12px rgba(255, 192, 96, 0.45),
-    0 0 22px rgba(139, 92, 246, 0.3),
-    inset 0 0 18px rgba(255, 190, 92, 0.12);
+    0 0 14px rgba(168, 85, 247, 0.55),
+    0 0 24px rgba(34, 211, 238, 0.3),
+    0 0 30px rgba(236, 72, 153, 0.22),
+    inset 0 0 18px rgba(244, 195, 110, 0.16);
 }
 
 /* Empty seat */
 
 .mic-seat-empty::before {
-  border-color: rgba(202, 165, 255, 0.95);
+  border-color: transparent;
   box-shadow:
-    0 0 12px rgba(139, 92, 246, 0.4),
-    0 0 20px rgba(139, 92, 246, 0.2),
-    inset 0 0 16px rgba(139, 92, 246, 0.12);
+    0 0 12px rgba(168, 85, 247, 0.45),
+    0 0 22px rgba(34, 211, 238, 0.26),
+    0 0 28px rgba(236, 72, 153, 0.2),
+    inset 0 0 16px rgba(168, 85, 247, 0.18);
 }
 
 .mic-seat-empty:hover {
@@ -393,10 +409,12 @@
 }
 
 .mic-seat-empty:hover::before {
-  border-color: #f3c36f;
+  border-color: transparent;
   box-shadow:
-    0 0 15px rgba(255, 190, 92, 0.5),
-    0 0 25px rgba(139, 92, 246, 0.35);
+    0 0 16px rgba(168, 85, 247, 0.65),
+    0 0 28px rgba(34, 211, 238, 0.38),
+    0 0 34px rgba(236, 72, 153, 0.3),
+    0 0 40px rgba(244, 195, 110, 0.18);
 }
 
 /* Take mic and Leave seat buttons */
