@@ -505,9 +505,13 @@ useEffect(() => {
 
       const data = await response.json();
 
-      if (!cancelled && Array.isArray(data.rooms)) {
-        setRooms(data.rooms);
-      }
+     if (
+  !cancelled &&
+  Array.isArray(data.rooms) &&
+  data.rooms.length > 0
+) {
+  setRooms(data.rooms);
+}
     } catch (error) {
       console.error('Could not load shared rooms:', error);
     }
