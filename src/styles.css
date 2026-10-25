@@ -544,6 +544,17 @@ background:
 
 }
 
+/* Stabilize room background on mobile */
+@media (max-width: 780px) {
+  .room-page:has(.room-hero)::before {
+    position: fixed;
+    inset: 0;
+    background-size: auto, auto 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+}
+
 .room-page:has(.room-hero) .room-hero {
   background: transparent;
   border-color: rgba(255, 255, 255, 0.16);
