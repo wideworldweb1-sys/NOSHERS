@@ -520,3 +520,43 @@
     url('/room-themes/dragon-lair.png') center / cover no-repeat;
   border-color: #9c4a27;
 }
+
+/* NOSHERS — Full-screen room theme foundation */
+
+.room-page:has(.room-hero) {
+  position: relative;
+  isolation: isolate;
+}
+
+.room-page:has(.room-hero)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      rgba(10, 7, 18, 0.48),
+      rgba(10, 7, 18, 0.78)
+    ),
+    url('/room-themes/dragon-lair.png') center / cover no-repeat;
+}
+
+.room-page:has(.room-hero) .room-hero {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+}
+
+.room-page:has(.room-hero) .room-columns .panel {
+  background: rgba(15, 11, 24, 0.72);
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 780px) {
+  .room-page:has(.room-hero) {
+    padding-top: 18px;
+  }
+}
+
