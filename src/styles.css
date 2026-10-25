@@ -473,3 +473,14 @@
     font-size: 10px;
   }
 }
+/* NOSHERS — Dragon's Lair room theme */
+.room-hero.theme-dragon-lair {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(12, 8, 12, 0.48),
+      rgba(12, 8, 12, 0.72)
+    ),
+    url('/room-themes/dragon-lair.png') center / cover no-repeat;
+  border-color: #9c4a27;
+}
