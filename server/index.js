@@ -285,9 +285,27 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (pathname === '/api/rooms' && req.method === 'GET') {
-    res.writeHead(200);
-    return res.end(JSON.stringify({ rooms: sharedRooms }));
+    try {
+      const { data, error } = await supabase
+        .from('shared_rooms')
+        .select('rooms')
+        .eq('id', 1)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      const rooms = data?.rooms ?? sharedRooms;
+      sharedRooms = rooms;
+
+      res.writeHead(200);
+      return res.end(JSON.stringify({ rooms }));
+    } catch (error) {
+      console.error('Load shared rooms error:', error.message);
+      res.writeHead(500);
+      return res.end(JSON.stringify({ error: 'Could not load rooms.' }));
+    }
   }
+
   if (pathname === '/api/rooms' && req.method === 'POST') {
     let body = '';
 
@@ -296,7 +314,7 @@ const server = http.createServer(async (req, res) => {
       if (body.length > 100_000) req.destroy();
     });
 
-    req.on('end', () => {
+    req.on('end', async () => {
       try {
         const data = JSON.parse(body || '{}');
 
@@ -305,17 +323,33 @@ const server = http.createServer(async (req, res) => {
           return res.end(JSON.stringify({ error: 'Rooms must be a list.' }));
         }
 
+        const { error } = await supabase
+          .from('shared_rooms')
+          .upsert(
+            {
+              id: 1,
+              rooms: data.rooms,
+              updated_at: new Date().toISOString()
+            },
+            { onConflict: 'id' }
+          );
+
+        if (error) throw error;
+
         sharedRooms = data.rooms;
+
         res.writeHead(200);
         return res.end(JSON.stringify({ ok: true }));
-      } catch {
-        res.writeHead(400);
-        return res.end(JSON.stringify({ error: 'Invalid JSON.' }));
+      } catch (error) {
+        console.error('Save shared rooms error:', error.message);
+        res.writeHead(500);
+        return res.end(JSON.stringify({ error: 'Could not save rooms.' }));
       }
     });
 
     return;
   }
+
 
   if (req.url === '/health' && req.method === 'GET') {
     res.writeHead(200); return res.end(JSON.stringify({ ok: true, service: 'noshers-token-server' }));
