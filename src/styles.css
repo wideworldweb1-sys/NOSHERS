@@ -560,3 +560,72 @@
   }
 }
 
+/* NOSHERS mobile room screen fit */
+@media (max-width: 780px) {
+  body:has(.room-page) {
+    overflow-x: hidden;
+  }
+
+  .main:has(.room-page) {
+    min-width: 0;
+    padding-bottom: 0;
+  }
+
+  .room-page {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 12px 12px calc(78px + env(safe-area-inset-bottom));
+  }
+
+  .room-page .room-hero {
+    padding: 14px;
+  }
+
+  .room-page .room-columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .room-page .panel {
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .room-page .speaker-grid {
+    gap: 4px;
+  }
+
+  .room-page .speaker {
+    padding: 6px 2px;
+    gap: 4px;
+  }
+
+  .room-page .speaker-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+  }
+
+  .room-page .chat-messages {
+    min-height: 0;
+    max-height: 180px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .room-page .chat-input {
+    position: sticky;
+    bottom: 0;
+    margin-top: 10px;
+    z-index: 2;
+  }
+
+  .room-page .room-controls {
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+}
+
