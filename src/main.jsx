@@ -901,7 +901,7 @@ async function toggleRaiseHand() {
   >
 
             <span className={`avatar avatar-${room.color}`}>{room.avatar}</span><span className="mini-room-text"><b>{room.title}</b><small>{room.listeners} listening</small></span><span className="tiny-live"/>
-          </button>)}
+          </button>))}
         </div>
         <div className="sidebar-bottom">
           <div className="wallet-card"><div className="wallet-top"><Coins size={17}/><span>YOUR COINS</span></div><strong>{coins.toLocaleString()}</strong><button onClick={() => notify('Secure coin purchases will be added in the billing phase.')}>Get coins <Plus size={14}/></button></div>
