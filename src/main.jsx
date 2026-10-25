@@ -78,6 +78,7 @@ const [authLoading, setAuthLoading] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState('Disconnected');
 const [speakerRequests, setSpeakerRequests] = useState([]);
 const [micSeatAssignments, setMicSeatAssignments] = useState([]);
+  const [activeSpeakerIdentities, setActiveSpeakerIdentities] = useState([]);
 const [isHandRaised, setIsHandRaised] = useState(false);
 
 const [mutedParticipants, setMutedParticipants] = useState([]);
@@ -374,6 +375,13 @@ room.on(RoomEvent.ParticipantDisconnected, () => {
     };
   });
 });
+        
+room.on(RoomEvent.ActiveSpeakersChanged, (speakers) => {
+  setActiveSpeakerIdentities(
+    speakers.map((participant) => participant.identity)
+  );
+});
+
         if (cancelled) {
           await room.disconnect();
           return;
@@ -1039,7 +1047,9 @@ async function toggleRaiseHand() {
 
       return (
         <div
-          className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'}`}
+          
+className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${assignment && activeSpeakerIdentities.includes(assignment.identity) ? 'mic-seat-speaking' : ''}`}
+
           key={seatNumber}
         >
           <Mic size={24} />
