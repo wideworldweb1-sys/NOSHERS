@@ -574,6 +574,8 @@ background:
 }
 
 /* NOSHERS mobile room screen fit */
+
+/* NOSHERS mobile room layout */
 @media (max-width: 780px) {
   body:has(.room-page) {
     overflow-x: hidden;
@@ -588,57 +590,162 @@ background:
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    padding: 12px 12px calc(78px + env(safe-area-inset-bottom));
+    padding: 10px 10px calc(76px + env(safe-area-inset-bottom));
+  }
+
+  .room-page .back-link {
+    margin-bottom: 8px;
+    font-size: 11px;
   }
 
   .room-page .room-hero {
-    padding: 14px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+
+  .room-page .room-hero-content {
+    gap: 8px;
+    margin: 8px 0;
+  }
+
+  .room-page .avatar-xl {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 15px;
+  }
+
+  .room-page .room-hero h1 {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .room-page .room-meta {
+    gap: 5px;
+    font-size: 10px;
   }
 
   .room-page .room-columns {
+    display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 10px;
-    margin-top: 10px;
+    gap: 8px;
+    margin-top: 8px;
   }
 
-  .room-page .panel {
+  .room-page .speaker-panel,
+  .room-page .chat-panel {
     min-width: 0;
-    padding: 12px;
+    padding: 10px;
+    border-radius: 12px;
+  }
+
+  .room-page .panel-heading {
+    margin-bottom: 8px;
+  }
+
+  .room-page .panel-heading h2 {
+    font-size: 13px;
   }
 
   .room-page .speaker-grid {
-    gap: 4px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
   }
 
   .room-page .speaker {
-    padding: 6px 2px;
-    gap: 4px;
+    min-width: 0;
+    padding: 5px 2px;
+    gap: 3px;
   }
 
   .room-page .speaker-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 14px;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    font-size: 12px;
+  }
+
+  .room-page .speaker b,
+  .room-page .speaker small {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: 9px;
+  }
+
+  .room-page .speaker .secondary-btn {
+    padding: 4px 5px;
+    font-size: 9px;
+  }
+
+  .room-page .mic-seats-section {
+    margin-top: 8px;
+  }
+
+  .room-page .mic-seat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .room-page .mic-seat {
+    min-width: 0;
+    padding: 7px 3px;
+    gap: 4px;
+  }
+
+  .room-page .mic-seat svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .room-page .mic-seat b,
+  .room-page .mic-seat small {
+    font-size: 9px;
+    overflow-wrap: anywhere;
+  }
+
+  .room-page .mic-seat .secondary-btn {
+    padding: 5px 4px;
+    font-size: 9px;
+  }
+
+  .room-page .room-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+    padding-top: 8px;
+  }
+
+  .room-page .room-controls button {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px 6px;
+    font-size: 10px;
   }
 
   .room-page .chat-messages {
     min-height: 0;
-    max-height: 180px;
+    max-height: 150px;
     overflow-y: auto;
     overscroll-behavior: contain;
+  }
+
+  .room-page .chat-line {
+    gap: 7px;
   }
 
   .room-page .chat-input {
     position: sticky;
     bottom: 0;
-    margin-top: 10px;
     z-index: 2;
+    margin-top: 8px;
   }
 
-  .room-page .room-controls {
-    gap: 6px;
-    margin-top: 10px;
-    padding-top: 10px;
+  .room-page .notice {
+    margin-top: 8px;
+    font-size: 10px;
   }
 }
 
