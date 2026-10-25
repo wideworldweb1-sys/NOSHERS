@@ -31,7 +31,16 @@ function App() {
   const [rooms, setRooms] = useState(() => {
   try {
     const savedRooms = localStorage.getItem('noshers-rooms');
-    return savedRooms ? JSON.parse(savedRooms) : initialRooms;
+
+if (savedRooms) {
+  const parsedRooms = JSON.parse(savedRooms);
+
+  if (Array.isArray(parsedRooms) && parsedRooms.length > 0) {
+    return parsedRooms;
+  }
+}
+
+return initialRooms;
   } catch {
     return initialRooms;
   }
