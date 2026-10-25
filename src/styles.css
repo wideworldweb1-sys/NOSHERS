@@ -534,12 +534,14 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    linear-gradient(
-      rgba(10, 7, 18, 0.48),
-      rgba(10, 7, 18, 0.78)
-    ),
-    url('/room-themes/dragon-lair.png') center / cover no-repeat;
+ 
+background:
+  linear-gradient(
+    rgba(10, 7, 18, 0.48),
+    rgba(10, 7, 18, 0.78)
+  ),
+  url('/room-themes/dragon-lair.png') center center / cover no-repeat;
+
 }
 
 .room-page:has(.room-hero) .room-hero {
