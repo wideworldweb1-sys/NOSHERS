@@ -113,6 +113,7 @@ let activityTimer = null;
       try {
         setConnectionStatus('Connecting...');
 const { data: { session } } = await supabase.auth.getSession();
+        console.log('NOSHERS session check:', !!session?.access_token);
         const response = await fetch(
           `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/livekit/token`,
           {
