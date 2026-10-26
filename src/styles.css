@@ -621,14 +621,18 @@ background:
     line-height: 1.2;
   }
 
- .room-page .room-columns {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  align-items: start;
+.room-page .room-columns {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
   margin-top: 8px;
 }
 
+.room-page .speaker-panel,
+.room-page .chat-panel {
+  width: 100%;
+  box-sizing: border-box;
+}
 .room-page .speaker-panel,
 .room-page .chat-panel {
   min-width: 0;
