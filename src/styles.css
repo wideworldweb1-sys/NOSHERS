@@ -765,3 +765,16 @@ background:
     box-sizing: border-box !important;
   }
 }
+
+/* NOSHERS room: transparent chat surface */
+.room-page .chat-panel.panel {
+  background: transparent !important;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+
+.room-page .chat-input {
+  background: rgba(10, 8, 14, 0.55);
+  border-color: rgba(244, 195, 110, 0.28);
+}
