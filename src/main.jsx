@@ -52,6 +52,7 @@ return initialRooms;
   const [showGifts, setShowGifts] = useState(false);
   const [selectedGiftRecipient, setSelectedGiftRecipient] = useState('');
   const [showProfile, setShowProfile] = useState(false);
+  const [showRoomDetails, setShowRoomDetails] = useState(false);
   const [displayName, setDisplayName] = useState(localStorage.getItem('noshers-display-name') || '');
 const [profilePhoto, setProfilePhoto] = useState(localStorage.getItem('noshers-profile-photo') || '');
   const [user, setUser] = useState(null);
@@ -945,34 +946,25 @@ async function toggleRaiseHand() {
           <section className="room-page">
             <button className="back-link" onClick={() => setActiveRoom(null)}>← Back to discover</button>
             <div className={`room-hero hero-${activeRoom.color} ${activeRoom.theme === 'dragon-lair' ? 'theme-dragon-lair' : ''}`}>
-              <div className="room-hero-glow"/>
-              <div className="hero-top"><span className="live-badge"><span className="live-dot"/> LIVE ROOM</span><span className="room-tag">{activeRoom.tag}</span></div>
-              <div className="room-hero-content"><span className={`avatar avatar-xl avatar-${activeRoom.color}`}>{activeRoom.avatar}</span><div><h1>{activeRoom.title}</h1><p>{activeRoom.topic}</p><div className="room-meta"><span><Users size={15}/>{activeRoom.listeners} listening</span><span>Hosted by {activeRoom.host}</span></div></div></div>
-              
-<div className="room-progress-card">
-  <div className="room-progress-top">
-    <span>🏆 Room Level {roomProgress.roomLevel}</span>
-    <span>{roomProgress.roomXp} XP</span>
-  </div>
 
-  <div className="room-progress-track">
-    <div
-      className="room-progress-fill"
-      style={{
-        width: `${roomProgress.roomXp % 100}%`
-      }}
-    />
-  </div>
+<div className="room-hero-glow" />
 
-  <small>
-    {roomProgressLoading
-      ? 'Loading room progress...'
-      : `${100 - (roomProgress.roomXp % 100)} XP to next level`}
-  </small>
-</div>
+<button
+  type="button"
+  className="room-hero-compact"
+  onClick={() => setShowRoomDetails(true)}
+>
+  <span className={`avatar avatar-xl avatar-${activeRoom.color}`}>
+    {activeRoom.avatar}
+  </span>
 
-              <div className="audio-status"><span className="wave"><i/><i/><i/><i/><i/><i/><i/></span><span>{connectionStatus}</span></div>
-            </div>
+  <span className="room-hero-compact-title">
+    {activeRoom.title}
+  </span>
+
+  <span className="room-hero-compact-arrow">›</span>
+</button>
+
             <div className="room-columns">
               <div className="speaker-panel panel"><div className="panel-heading"><h2>On stage</h2><span>
 {liveKitRoom
