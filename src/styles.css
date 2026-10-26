@@ -778,3 +778,74 @@ background:
   background: rgba(10, 8, 14, 0.55);
   border-color: rgba(244, 195, 110, 0.28);
 }
+
+/* NOSHERS: Compact room information at top-left */
+.room-page:has(.room-hero) .room-hero {
+  width: fit-content;
+  max-width: 100%;
+  padding: 10px 14px;
+  margin: 0;
+  border-radius: 12px;
+}
+
+.room-page:has(.room-hero) .hero-top {
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+}
+
+.room-page:has(.room-hero) .room-hero-content {
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.room-page:has(.room-hero) .avatar-xl {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  font-size: 15px;
+}
+
+.room-page:has(.room-hero) .room-hero h1 {
+  font-size: 18px;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+}
+
+.room-page:has(.room-hero) .room-hero p {
+  font-size: 10px;
+  margin-bottom: 6px;
+}
+
+.room-page:has(.room-hero) .room-meta {
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 9px;
+}
+
+.room-page:has(.room-hero) .audio-status {
+  padding-top: 7px;
+  gap: 6px;
+  font-size: 9px;
+}
+
+.room-page:has(.room-hero) .room-progress-card {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.room-page:has(.room-hero) .room-progress-top {
+  gap: 6px;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.room-page:has(.room-hero) .room-progress-track {
+  height: 5px;
+}
+
+.room-page:has(.room-hero) .room-progress-card small {
+  margin-top: 5px;
+  font-size: 9px;
+}
