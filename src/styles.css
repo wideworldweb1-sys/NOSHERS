@@ -342,15 +342,15 @@
 
 /* Occupied seat */
 
-
 .mic-seat-occupied::before {
   border-color: transparent;
   box-shadow:
-    0 0 14px rgba(168, 85, 247, 0.55),
-    0 0 24px rgba(34, 211, 238, 0.3),
-    0 0 30px rgba(236, 72, 153, 0.22),
-    inset 0 0 18px rgba(244, 195, 110, 0.16);
+    0 0 12px rgba(244, 195, 110, 0.55),
+    0 0 22px rgba(244, 195, 110, 0.32),
+    0 0 30px rgba(255, 230, 163, 0.18),
+    inset 0 0 18px rgba(244, 195, 110, 0.2);
 }
+
 
 /* Empty seat */
 
