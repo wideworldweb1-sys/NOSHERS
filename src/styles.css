@@ -576,9 +576,10 @@ background:
 }
 
 .room-page:has(.room-hero) .room-columns .panel {
-  background: rgba(15, 11, 24, 0.72);
-  backdrop-filter: blur(8px);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: transparent;
+  backdrop-filter: none;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
 }
 
 @media (max-width: 780px) {
