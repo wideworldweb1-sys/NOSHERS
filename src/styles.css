@@ -764,3 +764,24 @@ background:
     font-size: 10px;
   }
 }
+/* NOSHERS: Keep room chat below mic seats on mobile */
+@media (max-width: 780px) {
+  .room-page .room-columns {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .room-page .speaker-panel,
+  .room-page .chat-panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .room-page .chat-messages {
+    max-height: 150px;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
