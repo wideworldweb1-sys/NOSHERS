@@ -280,8 +280,8 @@
     inset 0 0 12px rgba(244, 195, 110, 0.12);
 }
 
-/* Glowing line beneath each mic */
 
+/* Premium golden glow beneath each mic */
 .mic-seat::after {
   content: "";
   position: absolute;
@@ -293,14 +293,17 @@
   border-radius: 50%;
   background: linear-gradient(
     90deg,
-    #833cff,
-    #f4c36e,
-    #a15aff
+    #8b642c,
+    #ffe6a3,
+    #c58b35,
+    #fff0bc,
+    #8b642c
   );
   box-shadow:
-    0 0 7px rgba(168, 85, 247, 0.8),
-    0 0 13px rgba(255, 190, 92, 0.35);
+    0 0 7px rgba(244, 195, 110, 0.7),
+    0 0 14px rgba(244, 195, 110, 0.4);
 }
+
 
 /* Keep the mic icon and text above the ring */
 
