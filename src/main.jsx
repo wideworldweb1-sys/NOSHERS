@@ -1128,48 +1128,200 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
 ))}</div><form className="chat-input" onSubmit={e => {e.preventDefault(); notify('Text chat will be enabled with account and backend setup.')}}><input placeholder="Say something kind..." /><button aria-label="Send message"><ChevronRight size={18}/></button></form></div>
             </div>
               
-{showRoomDetails && (
-  <div className="room-details-backdrop">
-    <div className="room-details-panel">
+
+{showRoomDetails && activeRoom && (
+  <div
+    className="room-details-backdrop"
+    onClick={() => setShowRoomDetails(false)}
+  >
+    <div
+      className="room-details-panel cinematic-room-panel"
+      onClick={(e) => e.stopPropagation()}
+    >
       <button
         type="button"
         className="room-details-close"
         onClick={() => setShowRoomDetails(false)}
+        aria-label="Close room details"
       >
         ✕
       </button>
 
-      <h2>{activeRoom.title}</h2>
-      <p>{activeRoom.topic || 'Welcome to our room!'}</p>
+      <div className={`cinematic-cover card-${activeRoom.color}`}>
+        <div className="cinematic-cover-shade" />
 
-      <div className="room-details-info">
-        <div>
-          <span>🎙️ Host</span>
-          <b>{activeRoom.host || 'Room Host'}</b>
+        <span className="cinematic-live-badge">
+          <span className="live-dot" /> LIVE NOW
+        </span>
+
+        <span className="cinematic-cover-avatar">
+          {activeRoom.avatar}
+        </span>
+
+        <div className="cinematic-cover-title">
+          <span className="eyebrow">NOSHERS EXCLUSIVE ROOM</span>
+          <h2>{activeRoom.title}</h2>
+          <p>{activeRoom.topic || 'Welcome to our room!'}</p>
+        </div>
+      </div>
+
+      <div className="cinematic-room-content">
+        <div className="cinematic-host-row">
+          <div className="cinematic-host-avatar">
+            {activeRoom.avatar || '👑'}
+          </div>
+
+          <div className="cinematic-host-info">
+            <small>YOUR HOST</small>
+            <strong>{activeRoom.host || 'Room Host'}</strong>
+            <span className="cinematic-vip-badge">
+              ✦ VIP HOST
+            </span>
+          </div>
+
+          <div className="cinematic-listener-count">
+            <Users size={17} />
+            <strong>
+              {liveKitRoom
+                ? 1 + liveKitRoom.remoteParticipants.size
+                : 0}
+            </strong>
+            <small>In room</small>
+          </div>
         </div>
 
-        <div>
-          <span>👥 People in room</span>
-          <b>
-            {liveKitRoom
-              ? 1 + liveKitRoom.remoteParticipants.size
-              : 0}
-          </b>
+        <div className="cinematic-level-card">
+          <div className="cinematic-level-heading">
+            <div>
+              <small>ROOM EXPERIENCE</small>
+              <h3>Level {roomProgress.roomLevel}</h3>
+            </div>
+            <span>⭐ {roomProgress.roomXp} XP</span>
+          </div>
+
+          <div
+            className="cinematic-xp-track"
+            role="progressbar"
+            aria-label="Room XP progress"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={roomProgress.roomXp % 100}
+          >
+            <div
+              className="cinematic-xp-fill"
+              style={{
+                width: `${roomProgress.roomXp % 100}%`
+              }}
+            />
+          </div>
+
+          <small className="cinematic-xp-caption">
+            {roomProgressLoading
+              ? 'Loading room progress...'
+              : `${100 - (roomProgress.roomXp % 100)} XP to next milestone`}
+          </small>
         </div>
 
-        <div>
-          <span>⭐ Room Level</span>
-          <b>{activeRoom.level || 1}</b>
+        <div className="cinematic-room-stats">
+          <div>
+            <span>🎙️</span>
+            <strong>{roomProgress.micCount}</strong>
+            <small>Mic seats</small>
+          </div>
+          <div>
+            <span>🎧</span>
+            <strong>
+              {liveKitRoom
+                ? liveKitRoom.remoteParticipants.size + 1
+                : 0}
+            </strong>
+            <small>Listeners & host</small>
+          </div>
+          <div>
+            <span>👑</span>
+            <strong>{roomProgress.roomLevel}</strong>
+            <small>Room level</small>
+          </div>
         </div>
 
-        <div>
-          <span>🎤 Mic Seats</span>
-          <b>{activeRoom.micCount || 5}</b>
+        <div className="cinematic-speakers">
+          <div className="cinematic-section-heading">
+            <h3>On stage</h3>
+            <span>
+              {liveKitRoom
+                ? 1 + liveKitRoom.remoteParticipants.size
+                : 0} participants
+            </span>
+          </div>
+
+          <div className="cinematic-speaker-list">
+            {liveKitRoom && [
+              liveKitRoom.localParticipant,
+              ...Array.from(
+                liveKitRoom.remoteParticipants.values()
+              )
+            ].slice(0, 5).map((participant, index) => (
+              <div
+                className="cinematic-speaker-avatar"
+                key={participant.identity}
+                title={participant.name || participant.identity}
+              >
+                {index === 0 && (
+                  <span className="cinematic-speaker-crown">♛</span>
+                )}
+                {(participant.name || participant.identity || '?')
+                  .charAt(0)
+                  .toUpperCase()}
+              </div>
+            ))}
+
+            {(!liveKitRoom ||
+              liveKitRoom.remoteParticipants.size === 0) && (
+              <span className="cinematic-empty-stage">
+                Join the conversation to meet the room
+              </span>
+            )}
+          </div>
         </div>
+
+        <div className="cinematic-gift-row">
+          <div>
+            <span className="eyebrow">SPREAD THE LOVE</span>
+            <h3>Send a gift 🎁</h3>
+          </div>
+
+          <div className="cinematic-gift-icons">
+            {gifts.map((gift) => (
+              <button
+                type="button"
+                key={gift.name}
+                title={`${gift.name} · ${gift.coins} coins`}
+                onClick={() => {
+                  setSelectedGiftRecipient('');
+                  setShowRoomDetails(false);
+                  setShowGifts(true);
+                }}
+              >
+                {gift.emoji}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          className="cinematic-join-button"
+          onClick={() => setShowRoomDetails(false)}
+        >
+          <AudioLines size={19} />
+          RETURN TO ROOM
+          <span>›</span>
+        </button>
       </div>
     </div>
   </div>
 )}
+
 
             <div className="notice"><ShieldCheck size={17}/><span><b>Safe spaces matter.</b> Report, block, and moderation tools are part of the production launch checklist.</span></div>
           </section>
