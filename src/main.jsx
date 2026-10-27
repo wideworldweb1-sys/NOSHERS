@@ -953,7 +953,11 @@ async function toggleRaiseHand() {
 <button
   type="button"
   className="room-hero-compact"
-  onClick={() => setShowRoomDetails(true)}
+  onClick={() => {
+  console.log('ROOM HEADER CLICKED');
+  setShowRoomDetails(true);
+  console.log('ROOM DETAILS STATE SET');
+}}
 >
   <span className={`avatar avatar-xl avatar-${activeRoom.color}`}>
     {activeRoom.avatar}
