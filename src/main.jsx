@@ -1123,6 +1123,50 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
   </div>
 ))}</div><form className="chat-input" onSubmit={e => {e.preventDefault(); notify('Text chat will be enabled with account and backend setup.')}}><input placeholder="Say something kind..." /><button aria-label="Send message"><ChevronRight size={18}/></button></form></div>
             </div>
+              
+{showRoomDetails && (
+  <div className="room-details-backdrop">
+    <div className="room-details-panel">
+      <button
+        type="button"
+        className="room-details-close"
+        onClick={() => setShowRoomDetails(false)}
+      >
+        ✕
+      </button>
+
+      <h2>{activeRoom.title}</h2>
+      <p>{activeRoom.topic || 'Welcome to our room!'}</p>
+
+      <div className="room-details-info">
+        <div>
+          <span>🎙️ Host</span>
+          <b>{activeRoom.host || 'Room Host'}</b>
+        </div>
+
+        <div>
+          <span>👥 People in room</span>
+          <b>
+            {liveKitRoom
+              ? 1 + liveKitRoom.remoteParticipants.size
+              : 0}
+          </b>
+        </div>
+
+        <div>
+          <span>⭐ Room Level</span>
+          <b>{activeRoom.level || 1}</b>
+        </div>
+
+        <div>
+          <span>🎤 Mic Seats</span>
+          <b>{activeRoom.micCount || 5}</b>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
             <div className="notice"><ShieldCheck size={17}/><span><b>Safe spaces matter.</b> Report, block, and moderation tools are part of the production launch checklist.</span></div>
           </section>
         ) : page === 'VIP Lounge' ? (
