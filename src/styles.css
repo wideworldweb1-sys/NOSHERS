@@ -1303,7 +1303,7 @@ background:
 }
 
 .gift-feed.rose-gift::before {
-  content: "🌹";
+  content: "";
   display: inline-block;
   margin-right: 8px;
   font-size: 22px;
