@@ -892,3 +892,77 @@ background:
   font-size: 22px;
   color: #c4b5fd;
 }
+
+/* NOSHERS Room Details Panel */
+.room-details-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 7, 20, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.room-details-panel {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 26px;
+  border: 1px solid rgba(196, 181, 253, 0.3);
+  border-radius: 22px;
+  background: linear-gradient(145deg, #21183b, #101326);
+  color: #fff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.room-details-panel h2 {
+  margin: 0 35px 8px 0;
+  font-size: 24px;
+  overflow-wrap: anywhere;
+}
+
+.room-details-panel > p {
+  margin: 0 0 22px;
+  color: #c4b5fd;
+}
+
+.room-details-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.room-details-info {
+  display: grid;
+  gap: 12px;
+}
+
+.room-details-info > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.room-details-info span {
+  color: #cbd0e5;
+}
+
+.room-details-info b {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
