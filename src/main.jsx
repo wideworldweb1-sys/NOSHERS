@@ -969,7 +969,7 @@ async function toggleRaiseHand() {
 
   <span className="room-hero-compact-arrow">›</span>
 </button>
-
+</div>
             <div className="room-columns">
               <div className="speaker-panel panel"><div className="panel-heading"><h2>On stage</h2><span>
 {liveKitRoom
