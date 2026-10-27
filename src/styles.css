@@ -1285,3 +1285,57 @@ background:
     padding: 16px;
   }
 }
+
+/* NOSHERS — Premium Rose Gift */
+.gift-feed {
+  position: relative;
+  overflow: hidden;
+}
+
+.gift-feed.rose-gift {
+  color: #fff0f3;
+  border: 1px solid rgba(255, 105, 145, 0.45);
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(255, 40, 100, 0.28), transparent 65%),
+    linear-gradient(135deg, #351321, #211326 70%);
+  box-shadow: 0 0 22px rgba(255, 55, 105, 0.12);
+  animation: noshersRoseGlow 3.5s ease-in-out both;
+}
+
+.gift-feed.rose-gift::before {
+  content: "🌹";
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 22px;
+  vertical-align: middle;
+  filter: drop-shadow(0 0 8px rgba(255, 65, 105, 0.55));
+  animation: noshersRoseRise 3.5s ease-out both;
+}
+
+@keyframes noshersRoseRise {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.7) rotate(-12deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) scale(1.12) rotate(4deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1) rotate(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-35px) scale(0.92) rotate(8deg);
+  }
+}
+
+@keyframes noshersRoseGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(255, 55, 105, 0);
+  }
+  25%, 65% {
+    box-shadow: 0 0 24px rgba(255, 55, 105, 0.24);
+  }
+}
