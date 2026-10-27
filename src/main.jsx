@@ -171,6 +171,7 @@ const { data: { session } } = await supabase.auth.getSession();
       
 
 room.on(RoomEvent.Disconnected, () => {
+  console.log('NOSHERS DEBUG: LiveKit disconnected event fired');
   if (activityTimer !== null) {
     clearInterval(activityTimer);
     activityTimer = null;
