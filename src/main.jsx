@@ -1173,7 +1173,10 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
 </div>
 
               <div className="chat-panel panel"><div className="panel-heading"><h2>Room chat</h2><span>Community</span></div><div className="chat-messages"><div className="chat-line"><span className="chat-avatar ca1">M</span><p><b>Mira</b><span>Welcome in, everyone 💜</span></p><small>now</small></div><div className="chat-line"><span className="chat-avatar ca2">Z</span><p><b>Zayn</b><span>Love this vibe ✨</span></p><small>1m</small></div><div className="chat-line"><span className="chat-avatar ca3">L</span><p><b>Luna</b><span>What are we talking about tonight?</span></p><small>2m</small></div>{sentGifts.map((g, i) => (
-  <div className="gift-feed" key={i}>
+  <div
+  className={`gift-feed ${g.name === 'Rose' ? 'rose-gift' : ''}`}
+  key={g.id || i}
+>
     
 {g.emoji} {g.sender === 'You' ? 'You sent' : `${g.sender} sent`} {g.name} to {g.recipient || 'the room'}
 
