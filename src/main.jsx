@@ -60,6 +60,35 @@ const [authEmail, setAuthEmail] = useState('');
 const [authPassword, setAuthPassword] = useState('');
 const [authMode, setAuthMode] = useState('login');
 const [authLoading, setAuthLoading] = useState(false);
+  
+useEffect(() => {
+  let mounted = true;
+
+  supabase.auth.getSession().then(({ data, error }) => {
+    if (!mounted) return;
+
+    if (error) {
+      console.error('NOSHERS session check failed:', error.message);
+      return;
+    }
+
+    setUser(data.session?.user ?? null);
+  });
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    if (mounted) {
+      setUser(session?.user ?? null);
+    }
+  });
+
+  return () => {
+    mounted = false;
+    subscription.unsubscribe();
+  };
+}, []);
+
   const [roomTitle, setRoomTitle] = useState('');
   const [roomTopic, setRoomTopic] = useState('');
   const [toast, setToast] = useState('');
@@ -501,6 +530,29 @@ useEffect(() => {
       setAuthLoading(false);
     }
   };
+
+const handleLogout = async () => {
+  try {
+    setAuthLoading(true);
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) throw error;
+
+    setUser(null);
+    setAuthPassword('');
+    setAuthEmail('');
+    setShowProfile(false);
+    setShowRoomDetails(false);
+
+    notify('You have been logged out.');
+  } catch (error) {
+    console.error('NOSHERS logout error:', error);
+    alert(error.message || 'Logout failed. Please try again.');
+  } finally {
+    setAuthLoading(false);
+  }
+};
 
 useEffect(() => {
   let cancelled = false;
@@ -1518,6 +1570,17 @@ reader.readAsDataURL(file);
       >
         <Camera size={17}/> Save profile
       </button>
+      
+      {user && (
+        <button
+          className="secondary-btn full"
+          disabled={authLoading}
+          onClick={handleLogout}
+        >
+          {authLoading ? 'Logging out...' : 'Log out'}
+        </button>
+      )}
+
     </div>
   </div>
 )}
