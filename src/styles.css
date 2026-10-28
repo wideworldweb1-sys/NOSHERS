@@ -442,18 +442,16 @@
 }
 
 /* Tablet */
-
 @media (max-width: 700px) {
   .mic-seat-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px 8px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px 4px;
   }
 
   .mic-seat {
-    min-height: 144px;
+    min-height: 120px;
   }
 }
-
 /* Small mobile screens */
 
 @media (max-width: 380px) {
