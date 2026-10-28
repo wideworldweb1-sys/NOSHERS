@@ -670,11 +670,10 @@ background:
     margin-top: 8px;
   }
 
-  .room-page .mic-seat-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 4px;
-  }
-
+ .room-page .mic-seat-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+}
   .room-page .mic-seat {
     min-width: 0;
     padding: 5px 2px;
