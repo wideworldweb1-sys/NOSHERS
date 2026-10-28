@@ -1286,11 +1286,13 @@ background:
   }
 }
 
+
 /* NOSHERS — Premium Rose Gift */
 .gift-feed {
   position: relative;
   overflow: hidden;
 }
+
 .gift-feed.rose-gift .gift-emoji {
   display: inline-block;
   margin-right: 8px;
@@ -1299,6 +1301,10 @@ background:
   filter: drop-shadow(0 0 8px rgba(255, 65, 105, 0.55));
   animation: noshersRoseRise 3.5s ease-out both;
 }
+
+@keyframes noshersRoseRise {
+  0% {
+    opacity: 0;
     transform: translateY(24px) scale(0.7) rotate(-12deg);
   }
   20% {
@@ -1314,6 +1320,7 @@ background:
     transform: translateY(-35px) scale(0.92) rotate(8deg);
   }
 }
+
 
 @keyframes noshersRoseGlow {
   0%, 100% {
