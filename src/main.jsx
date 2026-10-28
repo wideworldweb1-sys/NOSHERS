@@ -1178,7 +1178,8 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
   key={g.id || i}
 >
     
-{g.emoji} {g.sender === 'You' ? 'You sent' : `${g.sender} sent`} {g.name} to {g.recipient || 'the room'}
+<span className="gift-emoji">{g.emoji}</span>{' '}
+{g.sender === 'You' ? 'You sent' : `${g.sender} sent`} {g.name} to {g.recipient || 'the room'}
 
   </div>
 ))}</div><form className="chat-input" onSubmit={e => {e.preventDefault(); notify('Text chat will be enabled with account and backend setup.')}}><input placeholder="Say something kind..." /><button aria-label="Send message"><ChevronRight size={18}/></button></form></div>
