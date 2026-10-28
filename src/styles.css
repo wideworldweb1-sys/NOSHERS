@@ -1291,19 +1291,7 @@ background:
   position: relative;
   overflow: hidden;
 }
-
-.gift-feed.rose-gift {
-  color: #fff0f3;
-  border: 1px solid rgba(255, 105, 145, 0.45);
-  background:
-    radial-gradient(ellipse at 50% 120%, rgba(255, 40, 100, 0.28), transparent 65%),
-    linear-gradient(135deg, #351321, #211326 70%);
-  box-shadow: 0 0 22px rgba(255, 55, 105, 0.12);
-  animation: noshersRoseGlow 3.5s ease-in-out both;
-}
-
-.gift-feed.rose-gift::before {
-  content: "";
+.gift-feed.rose-gift .gift-emoji {
   display: inline-block;
   margin-right: 8px;
   font-size: 22px;
@@ -1311,10 +1299,6 @@ background:
   filter: drop-shadow(0 0 8px rgba(255, 65, 105, 0.55));
   animation: noshersRoseRise 3.5s ease-out both;
 }
-
-@keyframes noshersRoseRise {
-  0% {
-    opacity: 0;
     transform: translateY(24px) scale(0.7) rotate(-12deg);
   }
   20% {
