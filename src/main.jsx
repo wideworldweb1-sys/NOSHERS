@@ -612,8 +612,8 @@ async function createRoom(e) {
         avatar: 'Y',
     live: true,
     level: 1,
-    micCount: 5,
-    unlockedMaxMics: getUnlockedMaxMics(1)
+micCount: 10,
+unlockedMaxMics: getUnlockedMaxMics(1)
   };
 
   const updatedRooms = [room, ...rooms];
