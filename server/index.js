@@ -275,7 +275,7 @@ const server = http.createServer(async (req, res) => {
         roomId,
         roomXp: data?.room_xp ?? 0,
         roomLevel: data?.room_level ?? 1,
-        micCount: data?.mic_count ?? 5
+        micCount: data?.mic_count ?? 10
       }));
     } catch (error) {
       console.error('Room progress API error:', error.message);
