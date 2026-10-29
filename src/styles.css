@@ -1326,6 +1326,7 @@ background:
   25%, 65% {
     box-shadow: 0 0 24px rgba(255, 55, 105, 0.24);
   }
+  }
 /* NOSHERS — Mic Seats Horizontal Layout */
 .mic-seat-grid {
   display: grid !important;
