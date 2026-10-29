@@ -665,13 +665,29 @@ async function loadRoomProgress(roomId) {
       throw new Error('Could not load room progress');
     }
 
-    const data = await response.json();
+const data = await response.json();
 
-    setRoomProgress({
-      roomXp: Number(data.roomXp ?? 0),
-      roomLevel: Number(data.roomLevel ?? 1),
-      micCount: Number(data.micCount ?? 5)
-    });
+setRoomProgress({
+  roomXp: Number(data.roomXp ?? 0),
+  roomLevel: Number(data.roomLevel ?? 1),
+  micCount: Number(data.micCount ?? 10)
+});
+
+setActiveRoom(currentRoom => {
+  if (!currentRoom || String(currentRoom.id) !== String(roomId)) {
+    return currentRoom;
+  }
+
+  const level = Number(data.roomLevel ?? 1);
+  const micCount = Number(data.micCount ?? 10);
+
+  return {
+    ...currentRoom,
+    level,
+    micCount,
+    unlockedMaxMics: getUnlockedMaxMics(level)
+  };
+});
   } catch (error) {
     console.error('Room progress load error:', error);
   } finally {
