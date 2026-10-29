@@ -589,16 +589,10 @@ useEffect(() => {
     window.clearInterval(timer);
   };
 }, []);
-  function getUnlockedMaxMics(level) {
-  if (level >= 25) return 15;
-  if (level >= 20) return 12;
-  if (level >= 15) return 11;
-  if (level >= 10) return 10;
-  if (level >= 9) return 9;
-  if (level >= 7) return 8;
-  if (level >= 5) return 7;
-  if (level >= 3) return 6;
-  return 5;
+ function getUnlockedMaxMics(level) {
+  if (level >= 25) return 21;
+  if (level >= 15) return 15;
+  return 10;
 }
   const filteredRooms = rooms.filter(r => `${r.title} ${r.topic} ${r.host}`.toLowerCase().includes(search.toLowerCase()));
 
