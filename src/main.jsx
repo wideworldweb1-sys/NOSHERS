@@ -674,7 +674,7 @@ setRoomProgress({
 });
 
 setActiveRoom(currentRoom => {
-  if (!currentRoom || String(currentRoom.id) !== String(roomId)) {
+  if (!currentRoom || String(currentRoom.title) !== String(roomId)) {
     return currentRoom;
   }
 
@@ -982,7 +982,7 @@ async function toggleRaiseHand() {
     className="mini-room"
     onClick={() => {
       setActiveRoom(room);
-      loadRoomProgress(room.id);
+      loadRoomProgress(room.title);
     }}
   >
 
@@ -1409,7 +1409,7 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
 onClick={() => {
   setActiveRoom(room);
   setMuted(true);
-  loadRoomProgress(room.id);
+  loadRoomProgress(room.title);
 }}
 ><div className={`card-art card-${room.color}`}><span className="live-badge"><span className="live-dot"/> LIVE</span><span className="room-tag">{room.tag}</span><div className="card-orbit"><AudioLines size={32}/></div><div className="card-people">{room.speakers.slice(0,3).map((s,i)=><span className={`avatar avatar-${['rose','blue','gold'][i]}`} key={s}>{s[0]}</span>)}</div></div><div className="room-card-body"><h3>{room.title}</h3><p>{room.topic}</p><div className="card-footer"><span className="host-label">Hosted by <b>{room.host}</b></span><span className="listener-count"><Headphones size={14}/>{room.listeners}</span></div><div className="join-hover">Enter room <ChevronRight size={16}/></div></div></article>)}</div>
             {filteredRooms.length === 0 && <div className="empty-state"><Search size={28}/><h2>No rooms found</h2><p>Try another search, or create a new room.</p><button className="primary-btn" onClick={() => setShowCreate(true)}>Create a room</button></div>}
