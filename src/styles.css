@@ -1326,16 +1326,18 @@ background:
   25%, 65% {
     box-shadow: 0 0 24px rgba(255, 55, 105, 0.24);
   }
-  /* NOSHERS — Mic seats horizontal row */
-.room-page .mic-seat-grid {
+/* NOSHERS — Mic Seats Horizontal Layout */
+.mic-seat-grid {
   display: grid !important;
   grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  gap: 10px !important;
-  width: 100%;
+  grid-auto-flow: row !important;
+  gap: 12px !important;
+  width: 100% !important;
+  align-items: start !important;
 }
 
-.room-page .mic-seat {
-  min-width: 0;
-  box-sizing: border-box;
-}
+.mic-seat-grid > .mic-seat {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
 }
