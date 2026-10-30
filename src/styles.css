@@ -285,7 +285,7 @@
 .mic-seat::after {
   content: "";
   position: absolute;
-  bottom: 3px;
+  bottom: 12px;
   left: 50%;
   width: 34px;
   height: 3px;
