@@ -1353,3 +1353,18 @@ background:
   border: 2px solid #d6b36a;
   box-shadow: 0 0 12px rgba(214, 179, 106, 0.35);
 }
+/* Fix mic seat DP and golden ring layering */
+.mic-seat-avatar {
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+}
+
+.mic-seat::before {
+  z-index: 0;
+}
+
+.mic-seat::after {
+  z-index: 1;
+  pointer-events: none;
+}
