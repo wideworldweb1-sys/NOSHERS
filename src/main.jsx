@@ -735,13 +735,14 @@ async function takeMicSeat(seatNumber) {
     return notify('This mic seat is already occupied.');
   }
 
-  const newAssignment = {
+   const newAssignment = {
     seatNumber,
     identity,
     name:
       liveKitRoom.localParticipant.name ||
       displayName ||
-      'Participant'
+      'Participant',
+    profilePhoto
   };
 
   await syncMicSeatAssignments([
