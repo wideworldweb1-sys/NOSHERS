@@ -1342,3 +1342,14 @@ background:
   min-width: 0 !important;
   box-sizing: border-box !important;
 }
+/* NOSHERS Mic Seat Profile Picture */
+.mic-seat-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 8px;
+  border: 2px solid #d6b36a;
+  box-shadow: 0 0 12px rgba(214, 179, 106, 0.35);
+}
