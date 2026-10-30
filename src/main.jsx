@@ -1113,7 +1113,15 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
 
           key={seatNumber}
         >
-          <Mic size={24} />
+          {assignment?.profilePhoto ? (
+  <img
+    src={assignment.profilePhoto}
+    alt={assignment.name || 'Participant'}
+    className="mic-seat-avatar"
+  />
+) : (
+  <Mic size={24} />
+)}
 
           <b>
             {assignment ? assignment.name : `Mic ${seatNumber}`}
