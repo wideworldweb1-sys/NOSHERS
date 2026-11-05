@@ -92,6 +92,8 @@ useEffect(() => {
 
   const [roomTitle, setRoomTitle] = useState('');
   const [roomTopic, setRoomTopic] = useState('');
+  const [editRoomTitle, setEditRoomTitle] = useState('');
+const [editRoomTopic, setEditRoomTopic] = useState('');
   const [toast, setToast] = useState('');
   const [coins, setCoins] = useState(1200);
   const [sentGifts, setSentGifts] = useState([]);
@@ -647,7 +649,51 @@ unlockedMaxMics: getUnlockedMaxMics(1)
     notify('Room save failed. Please check the server.');
   }
 }
-  
+  async function saveRoomDetails(e) {
+  e.preventDefault();
+
+  if (!activeRoom || !editRoomTitle.trim()) {
+    return notify('Room name is required.');
+  }
+
+  const updatedRoom = {
+    ...activeRoom,
+    title: editRoomTitle.trim(),
+    topic: editRoomTopic.trim() || 'Come say hello'
+  };
+
+  const updatedRooms = rooms.map(room =>
+    String(room.id) === String(activeRoom.id)
+      ? updatedRoom
+      : room
+  );
+
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_TOKEN_SERVER_URL || 'https://noshers-server.onrender.com'}/api/rooms`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ rooms: updatedRooms })
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Could not update room');
+    }
+
+    setRooms(updatedRooms);
+    setActiveRoom(updatedRoom);
+    setShowRoomSettings(false);
+
+    notify('Room details updated successfully!');
+  } catch (error) {
+    console.error('Room update error:', error);
+    notify('Room update failed. Please try again.');
+  }
+}
 async function loadRoomProgress(roomId) {
   if (!roomId) return;
 
@@ -1191,7 +1237,11 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
   </button>
   <button
   className="secondary-btn"
-  onClick={() => setShowRoomSettings(true)}
+  onClick={() => {
+  setEditRoomTitle(activeRoom?.title || '');
+  setEditRoomTopic(activeRoom?.topic || '');
+  setShowRoomSettings(true);
+}}
 >
   <Settings size={17}/> Room Settings
 </button>
@@ -1463,8 +1513,33 @@ onClick={() => {
       <p>Manage your room experience.</p>
 
       <div className="room-settings-content">
-        <p>More room settings coming soon.</p>
-      </div>
+  <form onSubmit={saveRoomDetails}>
+    <label>
+      Room Name
+      <input
+        value={editRoomTitle}
+        onChange={(e) => setEditRoomTitle(e.target.value)}
+        maxLength={70}
+        required
+        placeholder="Enter room name"
+      />
+    </label>
+
+    <label>
+      Room Topic
+      <input
+        value={editRoomTopic}
+        onChange={(e) => setEditRoomTopic(e.target.value)}
+        maxLength={100}
+        placeholder="Enter room topic"
+      />
+    </label>
+
+    <button className="primary-btn full" type="submit">
+      Save Changes
+    </button>
+  </form>
+</div>
     </div>
   </div>
 )}
