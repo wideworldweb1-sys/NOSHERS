@@ -1188,6 +1188,12 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
   >
     <Gift size={17}/> Send a gift
   </button>
+  <button
+  className="secondary-btn"
+  onClick={() => notify('Room Settings coming soon!')}
+>
+  <Settings size={17}/> Room Settings
+</button>
 </div>
 </div>
 
