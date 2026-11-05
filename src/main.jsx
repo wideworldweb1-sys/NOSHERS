@@ -94,6 +94,7 @@ useEffect(() => {
   const [roomTopic, setRoomTopic] = useState('');
   const [editRoomTitle, setEditRoomTitle] = useState('');
 const [editRoomTopic, setEditRoomTopic] = useState('');
+  const [editRoomPrivacy, setEditRoomPrivacy] = useState('public');
   const [toast, setToast] = useState('');
   const [coins, setCoins] = useState(1200);
   const [sentGifts, setSentGifts] = useState([]);
@@ -158,6 +159,7 @@ const { data: { session } } = await supabase.auth.getSession();
 },
             body: JSON.stringify({
               roomName: activeRoom.title,
+              roomId: activeRoom.id,
               participantName: localStorage.getItem('noshers-display-name') || `Guest-${Math.random().toString(36).slice(2, 6)}`
             })
           }
@@ -597,16 +599,26 @@ useEffect(() => {
   if (level >= 15) return 15;
   return 10;
 }
-  const filteredRooms = rooms.filter(r => `${r.title} ${r.topic} ${r.host}`.toLowerCase().includes(search.toLowerCase()));
-
+  const filteredRooms = rooms.filter(r =>
+  r.privacy !== 'private' &&
+  `${r.title} ${r.topic} ${r.host}`.toLowerCase().includes(search.toLowerCase())
+);
 async function createRoom(e) {
   e.preventDefault();
   if (!roomTitle.trim()) return;
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if (!session?.user?.id) {
+    return notify('Please sign in before creating a room.');
+  }
 
   const room = {
     id: Date.now(),
     title: roomTitle.trim(),
     topic: roomTopic.trim() || 'Come say hello',
+    privacy: 'public',
+    ownerId: session.user.id,
     host: 'You',
     listeners: 1,
     speakers: ['You'],
@@ -659,7 +671,8 @@ unlockedMaxMics: getUnlockedMaxMics(1)
   const updatedRoom = {
     ...activeRoom,
     title: editRoomTitle.trim(),
-    topic: editRoomTopic.trim() || 'Come say hello'
+    topic: editRoomTopic.trim() || 'Come say hello',
+    privacy: editRoomPrivacy
   };
 
   const updatedRooms = rooms.map(room =>
@@ -1024,7 +1037,7 @@ async function toggleRaiseHand() {
         <div className="side-label room-label">LIVE RIGHT NOW <span className="live-dot"/></div>
         <div className="sidebar-rooms">
           
-{rooms.slice(0, 3).map(room => (
+{rooms.filter(room => room.privacy !== 'private').slice(0, 3).map(room => (
   <button
     key={room.id}
     className="mini-room"
@@ -1240,6 +1253,7 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
   onClick={() => {
   setEditRoomTitle(activeRoom?.title || '');
   setEditRoomTopic(activeRoom?.topic || '');
+    setEditRoomPrivacy(activeRoom?.privacy || 'public');
   setShowRoomSettings(true);
 }}
 >
@@ -1534,7 +1548,16 @@ onClick={() => {
         placeholder="Enter room topic"
       />
     </label>
-
+<label>
+  Room Privacy
+  <select
+    value={editRoomPrivacy}
+    onChange={(e) => setEditRoomPrivacy(e.target.value)}
+  >
+    <option value="public">Public</option>
+    <option value="private">Private</option>
+  </select>
+</label>
     <button className="primary-btn full" type="submit">
       Save Changes
     </button>
