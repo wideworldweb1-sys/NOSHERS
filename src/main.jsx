@@ -50,6 +50,7 @@ return initialRooms;
   const [search, setSearch] = useState('');
   const [showCreate, setShowCreate] = useState(false);
   const [showGifts, setShowGifts] = useState(false);
+  const [showRoomSettings, setShowRoomSettings] = useState(false);
   const [selectedGiftRecipient, setSelectedGiftRecipient] = useState('');
   const [showProfile, setShowProfile] = useState(false);
   const [showRoomDetails, setShowRoomDetails] = useState(false);
@@ -1190,7 +1191,7 @@ className={`mic-seat ${assignment ? 'mic-seat-occupied' : 'mic-seat-empty'} ${as
   </button>
   <button
   className="secondary-btn"
-  onClick={() => notify('Room Settings coming soon!')}
+  onClick={() => setShowRoomSettings(true)}
 >
   <Settings size={17}/> Room Settings
 </button>
@@ -1437,6 +1438,36 @@ onClick={() => {
       <nav className="mobile-nav">{[{label:'Discover',icon:House},{label:'Following',icon:Heart},{label:'Create',icon:Plus},{label:'VIP Lounge',icon:Crown},{label:'Profile',icon:UserRound}].map(({label,icon:Icon})=><button key={label} onClick={() => label==='Create'?setShowCreate(true):label==='Profile'?setShowProfile(true):(setPage(label),setActiveRoom(null))} className={page===label?'mobile-active':''}><Icon size={19}/><small>{label}</small></button>)}</nav>
 
       {showCreate && <div className="modal-backdrop" onClick={() => setShowCreate(false)}><div className="modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowCreate(false)}><X size={18}/></button><span className="modal-icon"><Mic size={23}/></span><span className="eyebrow">BRING PEOPLE TOGETHER</span><h2>Create your room</h2><p>Give your conversation a name and invite the world in.</p><form onSubmit={createRoom}><label>Room name<input value={roomTitle} onChange={e=>setRoomTitle(e.target.value)} required maxLength={70} placeholder="e.g. After Hours ☾"/></label><label>What's the vibe? <input value={roomTopic} onChange={e=>setRoomTopic(e.target.value)} maxLength={100} placeholder="Music, stories, late night talks..."/></label><button className="primary-btn full" type="submit"><Plus size={17}/> Create room</button></form><small className="modal-footnote">Demo mode: real-time voice needs LiveKit credentials and a token server.</small></div></div>}
+      {showRoomSettings && (
+  <div
+    className="modal-backdrop"
+    onClick={() => setShowRoomSettings(false)}
+  >
+    <div
+      className="modal"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        className="modal-close"
+        onClick={() => setShowRoomSettings(false)}
+      >
+        <X size={18}/>
+      </button>
+
+      <span className="modal-icon">
+        <Settings size={23}/>
+      </span>
+
+      <span className="eyebrow">ROOM CONTROL CENTER</span>
+      <h2>Room Settings</h2>
+      <p>Manage your room experience.</p>
+
+      <div className="room-settings-content">
+        <p>More room settings coming soon.</p>
+      </div>
+    </div>
+  </div>
+)}
 
       {showGifts && <div className="modal-backdrop" onClick={() => setShowGifts(false)}><div className="modal gifts-modal" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setShowGifts(false)}><X size={18}/></button><span className="modal-icon gift-modal-icon"><Gift size={23}/></span><span className="eyebrow">SPREAD THE GOOD ENERGY</span><h2>Send a little love</h2>
 <p>Choose who you want to send a gift to.</p>
