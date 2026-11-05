@@ -1342,27 +1342,18 @@ background:
   min-width: 0 !important;
   box-sizing: border-box !important;
 }
-/* NOSHERS Mic Seat Profile Picture */
-.mic-seat-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  margin: 0 auto 8px;
-}
-/* Fix mic seat DP and golden ring layering */
+/* NOSHERS — Mic Seat DP */
+/* NOSHERS — Mic Seat DP Perfect Fit */
 .mic-seat-avatar {
   position: relative;
   z-index: 2;
-  isolation: isolate;
-}
-
-.mic-seat::before {
-  z-index: 0;
-}
-
-.mic-seat::after {
-  z-index: 1;
-  pointer-events: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: 8px auto;
+  border: none;
+  box-shadow: none;
 }
