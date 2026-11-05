@@ -1353,7 +1353,7 @@ background:
   object-fit: cover;
   object-position: center;
   display: block;
-  margin: -4px auto 4px;
+  margin: -0px auto 4px;
   border: none;
   box-shadow: none;
 }
