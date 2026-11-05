@@ -316,6 +316,14 @@ const server = http.createServer(async (req, res) => {
 
     req.on('end', async () => {
       try {
+        const { user, error: authError } = await verifySupabaseUser(req);
+
+if (authError || !user) {
+  res.writeHead(401);
+  return res.end(JSON.stringify({
+    error: 'Please sign in to save rooms.'
+  }));
+}
         const data = JSON.parse(body || '{}');
 
         if (!Array.isArray(data.rooms)) {
@@ -365,9 +373,11 @@ const server = http.createServer(async (req, res) => {
   req.on('data', chunk => { body += chunk; if (body.length > 10_000) req.destroy(); });
   req.on('end', async () => {
     try {
-      const { roomName, participantName } = JSON.parse(body || '{}');
+      const { roomName, roomId, participantName } = JSON.parse(body || '{}');
       if (typeof roomName !== 'string' || !roomName.trim() || roomName.length > 100 ||
-          typeof participantName !== 'string' || !participantName.trim() || participantName.length > 80) {
+    (typeof roomId !== 'string' && typeof roomId !== 'number') ||
+    !String(roomId).trim() ||
+    typeof participantName !== 'string' || !participantName.trim() || participantName.length > 80) {
         res.writeHead(400); return res.end(JSON.stringify({ error: 'Valid roomName and participantName are required.' }));
       }
       const { user, error: authError } = await verifySupabaseUser(req);
@@ -376,6 +386,32 @@ if (authError || !user) {
   res.writeHead(401);
   return res.end(JSON.stringify({
     error: 'Please sign in to join a voice room.'
+  }));
+}
+      const { data: roomData, error: roomError } = await supabase
+  .from('shared_rooms')
+  .select('rooms')
+  .eq('id', 1)
+  .maybeSingle();
+
+if (roomError) throw roomError;
+
+const selectedRoom = (roomData?.rooms || []).find(
+  room => String(room.id) === String(roomId)
+);
+
+if (!selectedRoom || selectedRoom.title !== roomName.trim()) {
+  res.writeHead(404);
+  return res.end(JSON.stringify({ error: 'Room not found.' }));
+}
+
+if (
+  selectedRoom.privacy === 'private' &&
+  selectedRoom.ownerId !== user.id
+) {
+  res.writeHead(403);
+  return res.end(JSON.stringify({
+    error: 'This is a private room. Only the host can join.'
   }));
 }
       const token = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, {
